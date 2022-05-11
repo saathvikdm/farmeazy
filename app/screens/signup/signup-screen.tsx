@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite"
 import { TextStyle, View, ViewStyle } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../../navigators"
-import { Button, Header, Screen, Switch, Text, TextField } from "../../components"
+import { Button, Header, ItemPicker, Screen, Switch, Text, TextField } from "../../components"
 // import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "../../models"
 import { color, spacing, typography } from "../../theme"
@@ -113,14 +113,7 @@ export const SignupScreen: FC<StackScreenProps<NavigatorParamList, "signup">> = 
               labelTx="signUpScreen.passwordRepeatField"
               placeholderTx="signUpScreen.passwordRepeatPlaceholder"
             />
-            <Picker
-              selectedValue={selectedLanguage}
-              onValueChange={(itemValue, itemIndex) => setSelectedLanguage(itemValue)}
-            >
-              <Picker.Item label="Farmer" value="farmer" />
-              <Picker.Item label="Renter/Seller" value="renterSeller" />
-              <Picker.Item label="Buyer" value="buyer" />
-            </Picker>
+            <ItemPicker labelTx="signUpScreen.accountType" />
           </View>
           <View>
             <Button
