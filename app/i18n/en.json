@@ -10,13 +10,46 @@
   "welcomeScreen": {
     "poweredBy": "POWERED BY IGNITE",
     "readyForLaunch": "Ready for launch.",
-    "continue": "CONTINUE"
+    "continue": "CONTINUE",
+    "farmeazy": "FarmEazy",
+    "buySellRent": "Buy • Sell • Rent"
+  },
+  "loginScreen": {
+    "title": "Welcome!",
+    "subTitle": "Sign in or Create a new account",
+    "signIn": "Sign in",
+    "signUp": "No account yet? Sign up"
+  },
+  "signInScreen": {
+    "navHeader": "Login to continue",
+    "loginWelcome": "Welcome Back!",
+    "emailField": "Email address",
+    "emailPlaceHolder": "name@example.com",
+    "passwordField": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "rememberMe": "Remember me",
+    "signinBtn": "Sign in"
+  },
+  "signUpScreen": {
+    "navHeader": "Create Account",
+    "signUpTitle": "Create new account",
+    "nameField": "Full name",
+    "namePlaceHolder": "Enter your name",
+    "emailField": "Email address",
+    "emailPlaceHolder": "name@example.com",
+    "passwordField": "Create password",
+    "passwordPlaceholder": "Enter your password",
+    "passwordRepeatField": "Repeat password",
+    "passwordRepeatPlaceholder": "Re-Enter your password",
+    "accountType": "Account Type",
+    "accountTypePlaceHolder": "select account type",
+    "signUpBtn": "Sign up"
   },
   "demoScreen": {
     "howTo": "HOW TO",
     "title": "What’s In This Stack?",
     "tagLine": "Congratulations, you’ve got a very advanced React Native app template here.  Take advantage of this boilerplate!",
-    "reactotron": "Demo Reactotron",
+    "reactotron": "Settings",
     "demoList": "Demo List",
     "androidReactotronHint": "If this doesn't work, ensure the Reactotron desktop app is running, run adb reverse tcp:9090 tcp:9090 from your terminal, and reload the app.",
     "iosReactotronHint": "If this doesn't work, ensure the Reactotron desktop app is running and reload app.",
@@ -32,6 +65,11 @@
     "friendlySubtitle": "This is the screen that your users will see in production when an error is thrown. You'll want to customize this message (located in `app/i18n/en.json`) and probably the layout as well (`app/screens/error`). If you want to remove this entirely, check `app/app.tsx` for the <ErrorBoundary> component.",
     "traceTitle": "Error from %{name} stack",
     "reset": "RESET APP"
+  },
+  "settingsScreen": {
+    "header": "Settings",
+    "title": "Welcome to settings screen.",
+    "goBack": "Click to go back"
   },
   "storybook": {
     "placeholder": "Placeholder",
