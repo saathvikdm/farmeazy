@@ -8,7 +8,15 @@ import React from "react"
 import { useColorScheme } from "react-native"
 import { NavigationContainer, DefaultTheme, DarkTheme } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
-import { WelcomeScreen, DemoScreen, DemoListScreen, SettingsScreen, LoginScreen, SigninScreen, SignupScreen } from "../screens"
+import {
+  WelcomeScreen,
+  DemoScreen,
+  DemoListScreen,
+  SettingsScreen,
+  LoginScreen,
+  SigninScreen,
+  SignupScreen,
+} from "../screens"
 import { navigationRef, useBackButtonHandler } from "./navigation-utilities"
 
 /**
@@ -62,6 +70,7 @@ interface NavigationProps extends Partial<React.ComponentProps<typeof Navigation
 export const AppNavigator = (props: NavigationProps) => {
   const colorScheme = useColorScheme()
   useBackButtonHandler(canExit)
+
   return (
     <NavigationContainer
       ref={navigationRef}
