@@ -81,7 +81,7 @@ export const SigninScreen: FC<StackScreenProps<NavigatorParamList, "signin">> = 
     }
 
     const goBack = () => navigation.goBack()
-    const nextScreen = () => navigation.navigate("demo")
+    const nextScreen = () => navigation.navigate("farmerApp")
 
     return (
       <View testID="SignInScreen" style={FULL}>

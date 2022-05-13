@@ -1,0 +1,212 @@
+{
+  "market": [
+    {
+      "id": 1,
+      "minq": "5",
+      "name": "Carrots",
+      "seller": "Krishnappa",
+      "price": "50",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/8/89/Tomato_je.jpg"
+    },
+    {
+      "id": 2,
+      "minq": "10",
+      "name": "Tomatoes",
+      "seller": "Venkatappa",
+      "price": "35",
+      "image": "https://i.ndtvimg.com/mt/cooks/2014-11/carrots.jpg"
+    },
+    {
+      "id": 3,
+      "minq": "10",
+      "name": "Potatoes",
+      "seller": "Venkatappa",
+      "price": "40",
+      "image": "https://media.istockphoto.com/photos/three-potatoes-picture-id157430678?k=20&m=157430678&s=612x612&w=0&h=dfYLuPYwA50ojI90hZ4jCgKZd5TGnqf24UCVBszoZIA="
+    },
+    {
+      "id": 4,
+      "minq": "15",
+      "name": "Onions",
+      "seller": "Ramu",
+      "price": "100",
+      "image": "https://m.media-amazon.com/images/I/81gv--xMImL._SX679_.jpg"
+    },
+    {
+      "id": 5,
+      "minq": "5",
+      "name": "Potatoes",
+      "seller": "Ramiaiah",
+      "price": "38",
+      "image": "https://media.istockphoto.com/photos/three-potatoes-picture-id157430678?k=20&m=157430678&s=612x612&w=0&h=dfYLuPYwA50ojI90hZ4jCgKZd5TGnqf24UCVBszoZIA="
+    },
+    {
+      "id": 6,
+      "minq": "5",
+      "name": "Carrots",
+      "seller": "Rajesha",
+      "price": "55",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/8/89/Tomato_je.jpg"
+    },
+    {
+      "id": 7,
+      "minq": "15",
+      "name": "Potatoes",
+      "seller": "Rajesha",
+      "price": "40",
+      "image": "https://media.istockphoto.com/photos/three-potatoes-picture-id157430678?k=20&m=157430678&s=612x612&w=0&h=dfYLuPYwA50ojI90hZ4jCgKZd5TGnqf24UCVBszoZIA="
+    },
+    {
+      "id": 8,
+      "minq": "15",
+      "name": "Onions",
+      "seller": "Rajesha",
+      "price": "95",
+      "image": "https://m.media-amazon.com/images/I/81gv--xMImL._SX679_.jpg"
+    },
+    {
+      "id": 9,
+      "minq": "30",
+      "name": "Onions",
+      "seller": "Arjun",
+      "price": "50",
+      "image": "https://m.media-amazon.com/images/I/81gv--xMImL._SX679_.jpg"
+    },
+    {
+      "id": 10,
+      "minq": "30",
+      "name": "Carrots",
+      "seller": "Arjun",
+      "price": "35",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/8/89/Tomato_je.jpg"
+    }
+  ],
+  "listings": [
+    {
+      "id": 2,
+      "minq": "10",
+      "name": "Tomatoes",
+      "seller": "Venkatappa",
+      "price": "35",
+      "image": "https://i.ndtvimg.com/mt/cooks/2014-11/carrots.jpg"
+    },
+    {
+      "id": 3,
+      "minq": "10",
+      "name": "Potatoes",
+      "seller": "Venkatappa",
+      "price": "40",
+      "image": "https://media.istockphoto.com/photos/three-potatoes-picture-id157430678?k=20&m=157430678&s=612x612&w=0&h=dfYLuPYwA50ojI90hZ4jCgKZd5TGnqf24UCVBszoZIA="
+    }
+  ],
+  "buyRent": [
+    {
+      "id": 1,
+      "name": "Combine Harvester",
+      "lister": "Ram Murthy",
+      "type": "Rent",
+      "price": "500",
+      "location": "Mysore",
+      "image": "https://www.tractorjunction.com/blog/wp-content/uploads/2020/07/3055.png"
+    },
+    {
+      "id": 2,
+      "name": "Trailer sprayer",
+      "lister": "Ram Murthy",
+      "type": "Rent",
+      "price": "200",
+      "location": "Mysore",
+      "image": "https://www.tractorjunction.com/blog/wp-content/uploads/2020/07/3052.png"
+    },
+    {
+      "id": 3,
+      "name": "Cultivator",
+      "lister": "Ram Murthy",
+      "type": "Rent",
+      "price": "250",
+      "location": "Mysore",
+      "image": "https://www.tractorjunction.com/blog/wp-content/uploads/2020/07/3065.png"
+    },
+    {
+      "id": 4,
+      "name": "Powder Zinc Sulphate Monohydrate",
+      "lister": "Anil Kumar",
+      "type": "Buy",
+      "price": "75",
+      "location": "Mandya",
+      "image": "https://5.imimg.com/data5/HK/VL/TC/SELLER-1055433/zinc-sulphate-monohydrate-250x250.jpg"
+    },
+    {
+      "id": 5,
+      "name": "Roto Seed Drill",
+      "lister": "Anil Kumar",
+      "type": "Rent",
+      "price": "280",
+      "location": "Mandya",
+      "image": "https://www.tractorjunction.com/blog/wp-content/uploads/2020/07/1065.png"
+    },
+    {
+      "id": 6,
+      "name": "Manure Spreader",
+      "lister": "Ravindra",
+      "type": "Rent",
+      "price": "400",
+      "location": "Srirangapattana",
+      "image": "https://www.tractorjunction.com/blog/wp-content/uploads/2020/07/065.png"
+    },
+    {
+      "id": 7,
+      "name": "Potassium Metaphosphate",
+      "lister": "Ravindra",
+      "type": "Buy",
+      "price": "550",
+      "location": "Srirangapattana",
+      "image": "https://3.imimg.com/data3/BG/LF/MY-636472/a-250x250.jpg"
+    },
+    {
+      "id": 8,
+      "name": "Rotary Tiller",
+      "lister": "Virat",
+      "type": "Rent",
+      "price": "375",
+      "location": "Srirangapattana",
+      "image": "https://www.tractorjunction.com/blog/wp-content/uploads/2020/07/05.png"
+    },
+    {
+      "id": 9,
+      "name": "Amino Acid Granules",
+      "lister": "Pankaj",
+      "type": "Buy",
+      "price": "60",
+      "location": "Mysore",
+      "image": "https://5.imimg.com/data5/PU/NH/MY-7787638/amino-acid-granules-250x250.png"
+    },
+    {
+      "id": 10,
+      "name": "Cultivator",
+      "lister": "Pankaj",
+      "type": "Rent",
+      "price": "300",
+      "location": "Mysore",
+      "image": "https://www.tractorjunction.com/blog/wp-content/uploads/2020/07/3065.png"
+    },
+    {
+      "id": 11,
+      "name": "Combine Harvester",
+      "lister": "Ram Shetty",
+      "type": "Rent",
+      "price": "550",
+      "location": "Mandya",
+      "image": "https://www.tractorjunction.com/blog/wp-content/uploads/2020/07/3055.png"
+    }
+  ],
+  "profile": {
+    "name": "Venkatappa",
+    "ph": "9448766328",
+    "age": 41,
+    "sex": "Male",
+    "location": "Mysuru",
+    "type": "Farmer",
+    "image": "https://impactapp.in/blog/wp-content/uploads/2019/12/Farmer-Man-Image.jpeg"
+  }
+}
