@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Image, ImageStyle, StyleProp, TextStyle, View, ViewStyle } from "react-native"
+import { Image, ImageStyle, Pressable, StyleProp, TextStyle, View, ViewStyle } from "react-native"
 import { observer } from "mobx-react-lite"
 import { color, spacing, typography } from "../../theme"
 import { Text } from "../text/text"
@@ -23,6 +23,8 @@ export interface ListItemProps {
   lister?: string
   type?: string
   location?: string
+
+  onPress?: any
 }
 
 const LIST_CONTAINER: ViewStyle = {
@@ -49,11 +51,6 @@ const LIST_ITEM: ViewStyle = {
   justifyContent: "space-between",
 }
 
-const LIST_PRICE: TextStyle = {
-  fontSize: 21,
-  fontWeight: "bold",
-}
-
 const LIST_ITEM_DETAILS: ViewStyle = {
   flex: 0.7,
   marginLeft: 10,
@@ -68,6 +65,7 @@ const LIST_SELLER: ViewStyle = {
 
 const LIST_TEXT_SELLER: TextStyle = {
   marginLeft: 2,
+  fontSize: 10,
 }
 
 const LIST_ITEM_NAME: TextStyle = {
@@ -80,46 +78,74 @@ const LIST_MIN_QTY: TextStyle = {
   fontWeight: "bold",
 }
 
+const LIST_PRICE: TextStyle = {
+  fontSize: 14,
+  fontWeight: "bold",
+  color: color.palette.deepPurple,
+  marginLeft: 0,
+}
+
+const LIST_PRICE_CONTAINER: ViewStyle = {
+  backgroundColor: color.palette.primaryGreenT,
+  padding: 10,
+  borderRadius: 10,
+  flex: 0.25,
+  justifyContent: "center",
+  alignItems: "center",
+}
+
+const LIST_SUB_TEXT: TextStyle = {
+  backgroundColor: color.palette.lighterGrey,
+  paddingHorizontal: 5,
+  paddingVertical: 2,
+  fontSize: 10,
+  borderRadius: 10,
+  marginVertical: 5,
+  alignSelf: "flex-start",
+}
+
 export const ListItem = (props: ListItemProps) => {
   return (
-    <View style={LIST_CONTAINER}>
-      <Image source={{ uri: props.image }} style={IMAGE} />
-      <View style={LIST_ITEM}>
-        <View style={LIST_ITEM_DETAILS}>
-          <Text style={LIST_TEXT}>
-            {props.minq ? (
-              <>
-                Min. qty: <Text style={LIST_MIN_QTY}>{props.minq}</Text> KG
-              </>
+    <Pressable onPress={props.onPress}>
+      <View style={LIST_CONTAINER}>
+        <Image source={{ uri: props.image }} style={IMAGE} />
+        <View style={LIST_ITEM}>
+          <View style={LIST_ITEM_DETAILS}>
+            <Text style={[LIST_TEXT, LIST_SUB_TEXT]}>
+              {props.minq ? (
+                <>
+                  Min. qty: <Text style={LIST_MIN_QTY}>{props.minq}</Text> KG
+                </>
+              ) : (
+                <>
+                  <Text style={LIST_MIN_QTY}>{props.type}</Text>
+                </>
+              )}
+            </Text>
+            <Text style={[LIST_TEXT, LIST_ITEM_NAME]}>{props.name}</Text>
+            <View style={LIST_SELLER}>
+              <AntDesign name="user" size={12} color="black" />
+              <Text style={[LIST_TEXT, LIST_TEXT_SELLER]}>{props.seller || props.lister}</Text>
+              {props.lister && (
+                <View style={LIST_SELLER}>
+                  <Entypo name="location-pin" size={12} color="black" />
+                  <Text style={[LIST_TEXT, LIST_TEXT_SELLER]}>{props.location}</Text>
+                </View>
+              )}
+            </View>
+          </View>
+          <View style={LIST_PRICE_CONTAINER}>
+            {!props.type ? (
+              <Text style={[LIST_TEXT, LIST_PRICE]}>₹{props.price}/KG</Text>
             ) : (
-              <>
-                Type: <Text style={LIST_MIN_QTY}>{props.type}</Text>
-              </>
-            )}
-          </Text>
-          <Text style={[LIST_TEXT, LIST_ITEM_NAME]}>{props.name}</Text>
-          <View style={LIST_SELLER}>
-            <AntDesign name="user" size={16} color="black" />
-            <Text style={[LIST_TEXT, LIST_TEXT_SELLER]}>{props.seller || props.lister}</Text>
-            {props.lister && (
-              <View style={LIST_SELLER}>
-                <Entypo name="location-pin" size={16} color="black" />
-                <Text style={[LIST_TEXT, LIST_TEXT_SELLER]}>{props.location}</Text>
-              </View>
+              <Text style={[LIST_TEXT, LIST_PRICE]}>
+                ₹{props.price}
+                {props.type.includes("Rent") ? <>/Hr</> : <>/KG</>}
+              </Text>
             )}
           </View>
         </View>
-        <View>
-          {!props.type ? (
-            <Text style={[LIST_TEXT, LIST_PRICE]}>₹{props.price}/KG</Text>
-          ) : (
-            <Text style={[LIST_TEXT, LIST_PRICE]}>
-              ₹{props.price}
-              {props.type.includes("Rent") ? <>/Hr</> : <>/KG</>}
-            </Text>
-          )}
-        </View>
       </View>
-    </View>
+    </Pressable>
   )
 }

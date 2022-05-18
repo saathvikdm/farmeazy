@@ -21,6 +21,10 @@
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
+    },
+    "android": {
+      "package": "com.saathvik.farmeazy",
+      "versionCode": 1
     }
   }
 }

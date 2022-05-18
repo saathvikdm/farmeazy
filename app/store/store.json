@@ -19,7 +19,7 @@
     {
       "id": 3,
       "minq": "10",
-      "name": "Potatoes",
+      "name": "Fresh Potatoes",
       "seller": "Venkatappa",
       "price": "40",
       "image": "https://media.istockphoto.com/photos/three-potatoes-picture-id157430678?k=20&m=157430678&s=612x612&w=0&h=dfYLuPYwA50ojI90hZ4jCgKZd5TGnqf24UCVBszoZIA="
@@ -131,7 +131,7 @@
       "id": 4,
       "name": "Powder Zinc Sulphate Monohydrate",
       "lister": "Anil Kumar",
-      "type": "Buy",
+      "type": "Sale",
       "price": "75",
       "location": "Mandya",
       "image": "https://5.imimg.com/data5/HK/VL/TC/SELLER-1055433/zinc-sulphate-monohydrate-250x250.jpg"
@@ -158,7 +158,7 @@
       "id": 7,
       "name": "Potassium Metaphosphate",
       "lister": "Ravindra",
-      "type": "Buy",
+      "type": "Sale",
       "price": "550",
       "location": "Srirangapattana",
       "image": "https://3.imimg.com/data3/BG/LF/MY-636472/a-250x250.jpg"
@@ -176,7 +176,7 @@
       "id": 9,
       "name": "Amino Acid Granules",
       "lister": "Pankaj",
-      "type": "Buy",
+      "type": "Sale",
       "price": "60",
       "location": "Mysore",
       "image": "https://5.imimg.com/data5/PU/NH/MY-7787638/amino-acid-granules-250x250.png"
