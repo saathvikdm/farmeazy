@@ -81,7 +81,7 @@ const LIST_MIN_QTY: TextStyle = {
 const LIST_PRICE: TextStyle = {
   fontSize: 14,
   fontWeight: "bold",
-  color: color.palette.deepPurple,
+  // color: color.palette.deepPurple,
   marginLeft: 0,
 }
 
@@ -95,7 +95,7 @@ const LIST_PRICE_CONTAINER: ViewStyle = {
 }
 
 const LIST_SUB_TEXT: TextStyle = {
-  backgroundColor: color.palette.lighterGrey,
+  backgroundColor: color.palette.primaryGreenT,
   paddingHorizontal: 5,
   paddingVertical: 2,
   fontSize: 10,
@@ -114,7 +114,7 @@ export const ListItem = (props: ListItemProps) => {
             <Text style={[LIST_TEXT, LIST_SUB_TEXT]}>
               {props.minq ? (
                 <>
-                  Min. qty: <Text style={LIST_MIN_QTY}>{props.minq}</Text> KG
+                  MOQ: <Text style={LIST_MIN_QTY}>{props.minq}</Text> KG
                 </>
               ) : (
                 <>

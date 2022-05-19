@@ -25,7 +25,18 @@ export const MarketScreen = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false)
   const [modalData, setModalData] = useState(null)
 
-  const nextScreen = () => navigation.navigate("demo")
+  const profile = data.profile
+
+  const saveMarketData = (data) => {
+    setMarketData([...marketData, data])
+  }
+
+  const nextScreen = () =>
+    navigation.navigate("addProduct", {
+      profile,
+      marketData,
+      saveData: (data) => saveMarketData(data),
+    })
 
   return (
     <View style={FULL}>

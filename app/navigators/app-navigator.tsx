@@ -21,6 +21,7 @@ import {
   ListingScreen,
   BuyRentScreen,
   ProfileScreen,
+  AddProductScreen,
 } from "../screens"
 import { navigationRef, useBackButtonHandler } from "./navigation-utilities"
 
@@ -49,6 +50,7 @@ export type NavigatorParamList = {
   listing: undefined
   buyRent: undefined
   profile: undefined
+  addProduct: undefined
   // 🔥 Your screens go here
 }
 
@@ -70,6 +72,7 @@ const AppStack = () => {
       <Stack.Screen name="farmerApp" component={FarmerAppScreen} />
       <Stack.Screen name="market" component={MarketScreen} />
       <Stack.Screen name="listing" component={ListingScreen} />
+      <Stack.Screen name="addProduct" component={AddProductScreen} />
       <Stack.Screen name="buyRent" component={BuyRentScreen} />
       <Stack.Screen name="profile" component={ProfileScreen} />
       <Stack.Screen name="demo" component={DemoScreen} />

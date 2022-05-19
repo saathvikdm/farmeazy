@@ -45,6 +45,14 @@
     "accountTypePlaceHolder": "select account type",
     "signUpBtn": "Sign up"
   },
+  "addProductScreen": {
+    "productName": "Enter product name",
+    "productNamePH": "Tomatoes, Carrots, etc",
+    "minq": "Enter minimum order quantity",
+    "minqPH": "5, 10, 25, etc (in KG)",
+    "price": "Enter price per KG",
+    "pricePH": "100, 150, 200, etc (in ₹)"
+  },
   "demoScreen": {
     "howTo": "HOW TO",
     "title": "What’s In This Stack?",

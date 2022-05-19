@@ -3,18 +3,22 @@
     {
       "id": 1,
       "minq": "5",
-      "name": "Carrots",
+      "name": "Tomatoes",
       "seller": "Krishnappa",
       "price": "50",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/8/89/Tomato_je.jpg"
+      "location": "7, Sai Vihar Co Op Society, Asalpa Pipe Lane, Opp Hind Balvidhya Mandir, Srirangapattana",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/8/89/Tomato_je.jpg",
+      "phone": 23109859
     },
     {
       "id": 2,
       "minq": "10",
-      "name": "Tomatoes",
+      "name": "Carrots",
       "seller": "Venkatappa",
       "price": "35",
-      "image": "https://i.ndtvimg.com/mt/cooks/2014-11/carrots.jpg"
+      "location": "1853/2, Hari Ram Market, Bhagirath Palace, Mysuru",
+      "image": "https://i.ndtvimg.com/mt/cooks/2014-11/carrots.jpg",
+      "phone": 23109859
     },
     {
       "id": 3,
@@ -22,7 +26,9 @@
       "name": "Fresh Potatoes",
       "seller": "Venkatappa",
       "price": "40",
-      "image": "https://media.istockphoto.com/photos/three-potatoes-picture-id157430678?k=20&m=157430678&s=612x612&w=0&h=dfYLuPYwA50ojI90hZ4jCgKZd5TGnqf24UCVBszoZIA="
+      "location": "1853/2, Hari Ram Market, Bhagirath Palace, Mysuru",
+      "image": "https://media.istockphoto.com/photos/three-potatoes-picture-id157430678?k=20&m=157430678&s=612x612&w=0&h=dfYLuPYwA50ojI90hZ4jCgKZd5TGnqf24UCVBszoZIA=",
+      "phone": 23109859
     },
     {
       "id": 4,
@@ -30,7 +36,9 @@
       "name": "Onions",
       "seller": "Ramu",
       "price": "100",
-      "image": "https://m.media-amazon.com/images/I/81gv--xMImL._SX679_.jpg"
+      "location": "E15/29, Shahu Nagar Colony, Mysuru",
+      "image": "https://m.media-amazon.com/images/I/81gv--xMImL._SX679_.jpg",
+      "phone": 23109859
     },
     {
       "id": 5,
@@ -38,15 +46,19 @@
       "name": "Potatoes",
       "seller": "Ramiaiah",
       "price": "38",
-      "image": "https://media.istockphoto.com/photos/three-potatoes-picture-id157430678?k=20&m=157430678&s=612x612&w=0&h=dfYLuPYwA50ojI90hZ4jCgKZd5TGnqf24UCVBszoZIA="
+      "location": "Nr Gate 4, Opp.ambedkar College, Mysuru",
+      "image": "https://media.istockphoto.com/photos/three-potatoes-picture-id157430678?k=20&m=157430678&s=612x612&w=0&h=dfYLuPYwA50ojI90hZ4jCgKZd5TGnqf24UCVBszoZIA=",
+      "phone": 23109859
     },
     {
       "id": 6,
       "minq": "5",
-      "name": "Carrots",
+      "name": "Tomatoes",
       "seller": "Rajesha",
       "price": "55",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/8/89/Tomato_je.jpg"
+      "location": "1, Aminabai Chawl, Manvel Pada Rd, Srirangapattana",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/8/89/Tomato_je.jpg",
+      "phone": 23109859
     },
     {
       "id": 7,
@@ -54,7 +66,9 @@
       "name": "Potatoes",
       "seller": "Rajesha",
       "price": "40",
-      "image": "https://media.istockphoto.com/photos/three-potatoes-picture-id157430678?k=20&m=157430678&s=612x612&w=0&h=dfYLuPYwA50ojI90hZ4jCgKZd5TGnqf24UCVBszoZIA="
+      "location": "1, Aminabai Chawl, Manvel Pada Rd, Srirangapattana",
+      "image": "https://media.istockphoto.com/photos/three-potatoes-picture-id157430678?k=20&m=157430678&s=612x612&w=0&h=dfYLuPYwA50ojI90hZ4jCgKZd5TGnqf24UCVBszoZIA=",
+      "phone": 23109859
     },
     {
       "id": 8,
@@ -62,7 +76,9 @@
       "name": "Onions",
       "seller": "Rajesha",
       "price": "95",
-      "image": "https://m.media-amazon.com/images/I/81gv--xMImL._SX679_.jpg"
+      "location": "1, Aminabai Chawl, Manvel Pada Rd, Srirangapattana",
+      "image": "https://m.media-amazon.com/images/I/81gv--xMImL._SX679_.jpg",
+      "phone": 23109859
     },
     {
       "id": 9,
@@ -70,7 +86,9 @@
       "name": "Onions",
       "seller": "Arjun",
       "price": "50",
-      "image": "https://m.media-amazon.com/images/I/81gv--xMImL._SX679_.jpg"
+      "location": "18, A, Jay Nagar, Off Marve Road, Srirangapattana",
+      "image": "https://m.media-amazon.com/images/I/81gv--xMImL._SX679_.jpg",
+      "phone": 23109859
     },
     {
       "id": 10,
@@ -78,7 +96,9 @@
       "name": "Carrots",
       "seller": "Arjun",
       "price": "35",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/8/89/Tomato_je.jpg"
+      "location": "18, A, Jay Nagar, Off Marve Road, Srirangapattana",
+      "image": "https://i.ndtvimg.com/mt/cooks/2014-11/carrots.jpg",
+      "phone": 23109859
     }
   ],
   "listings": [
@@ -205,7 +225,7 @@
     "ph": "9448766328",
     "age": 41,
     "sex": "Male",
-    "location": "Mysuru",
+    "location": "1853/2, Hari Ram Market, Bhagirath Palace, Mysuru",
     "type": "Farmer",
     "image": "https://impactapp.in/blog/wp-content/uploads/2019/12/Farmer-Man-Image.jpeg"
   }
