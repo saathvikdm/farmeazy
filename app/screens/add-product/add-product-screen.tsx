@@ -80,17 +80,6 @@ export const AddProductScreen = ({ route, navigation }) => {
     navigation.goBack()
   }
 
-  // saveData({
-  //   id: 11,
-  //   image: "https://cdn.britannica.com/17/196817-050-6A15DAC3/vegetables.jpg",
-  //   location: "18, A, Jay Nagar, Off Marve Road, Srirangapattana",
-  //   minq: "30",
-  //   name: "Carrots",
-  //   phone: 23109859,
-  //   price: "40",
-  //   seller: "RamRaj",
-  // })
-
   return (
     <Screen style={CONTAINER} preset="scroll">
       <Header

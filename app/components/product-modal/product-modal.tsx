@@ -126,21 +126,10 @@ const PRODUCT_DETAILS: ViewStyle = {
   // justifyContent: "flex-start",
   alignItems: "flex-start",
 }
-export interface ProductModalProps {
-  /**
-   * An optional style override useful for padding & margin.
-   */
-  style?: StyleProp<ViewStyle>
-  modalVisible?: any
-  setModalVisible?: any
-  modalData?: any
-}
 
-export const ProductModal = ({
-  modalVisible = false,
-  setModalVisible,
-  modalData = null,
-}: ProductModalProps) => {
+export const ProductModal = ({ modalVisible = false, setModalVisible, modalData = null }) => {
+  let imgUrl
+  if (modalData) imgUrl = "http://192.168.29.110:8080/" + modalData.image.split("8080")[1]
   return (
     <Modal
       animationType="slide"
@@ -158,10 +147,15 @@ export const ProductModal = ({
                 <Ionicons name="arrow-back" size={30} color="black" />
               </Button>
             </View>
-            <Image source={{ uri: modalData.image }} style={IMAGE} />
+            <Image source={{ uri: imgUrl }} style={IMAGE} />
             <View style={DETAILS_CONTAINER}>
               <Text style={[TEXT, PRODUCT_NAME]}>{modalData.name}</Text>
-              <Text style={[TEXT, PRODUCT_MOQ]}>MOQ: {modalData.minq} KG(s)</Text>
+              <Text style={[TEXT, PRODUCT_MOQ]}>
+                Min. order quantity: {modalData.min_qty} KG(s)
+              </Text>
+              <Text style={[TEXT, PRODUCT_MOQ]}>
+                Avl. order quantity: {modalData.avl_qty} KG(s)
+              </Text>
               <View style={PRODUCT_PRICE}>
                 <Text style={[TEXT, PRODUCT_SUBHEADER]}>
                   Price: <Text style={TEXT_BOLD}>₹{modalData.price}/KG</Text>
@@ -169,7 +163,7 @@ export const ProductModal = ({
                 <Text style={[TEXT, PRODUCT_SUBHEADER]}>
                   Min Purchase Price:{" "}
                   <Text style={TEXT_BOLD}>
-                    ₹{parseInt(modalData.price) * parseInt(modalData.minq)} /-
+                    ₹{parseInt(modalData.price) * parseInt(modalData.min_qty)} /-
                   </Text>
                 </Text>
               </View>
@@ -178,16 +172,18 @@ export const ProductModal = ({
                 <View style={PRODUCT_SELLER}>
                   <AntDesign name="user" size={20} color="black" />
                   <Text style={[TEXT_BOLD, { paddingLeft: spacing[2] }]}>
-                    {modalData.seller || modalData.lister}
+                    {modalData.User.firstname} {modalData.User.lastname}
                   </Text>
                 </View>
                 <View style={PRODUCT_SELLER}>
                   <Entypo name="location-pin" size={20} color="black" />
-                  <Text style={[TEXT, { paddingLeft: spacing[2] }]}>{modalData.location}</Text>
+                  <Text style={[TEXT, { paddingLeft: spacing[2] }]}>{modalData.User.address}</Text>
                 </View>
                 <View style={PRODUCT_SELLER}>
                   <AntDesign name="phone" size={20} color="black" />
-                  <Text style={[TEXT, { paddingLeft: spacing[2] }]}>+91 {modalData.phone}</Text>
+                  <Text style={[TEXT, { paddingLeft: spacing[2] }]}>
+                    +91 {modalData.User.phone}
+                  </Text>
                 </View>
               </View>
             </View>

@@ -80,6 +80,10 @@ export const SigninScreen: FC<StackScreenProps<NavigatorParamList, "signin">> = 
       return toggle
     }
 
+    const handleInputChange = (text) => {
+      console.log(text)
+    }
+
     const goBack = () => navigation.goBack()
     const nextScreen = () => navigation.navigate("farmerApp")
 
@@ -98,6 +102,7 @@ export const SigninScreen: FC<StackScreenProps<NavigatorParamList, "signin">> = 
             <TextField
               labelTx="signInScreen.emailField"
               placeholderTx="signInScreen.emailPlaceHolder"
+              onChangeText={(text) => handleInputChange(text)}
             />
             <TextField
               labelTx="signInScreen.passwordField"

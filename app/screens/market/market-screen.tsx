@@ -3,7 +3,14 @@ import { observer } from "mobx-react-lite"
 import { Alert, Modal, Pressable, TextStyle, View, ViewStyle } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../../navigators"
-import { FloatingButton, ListItem, ProductModal, Screen, Text } from "../../components"
+import {
+  FloatingButton,
+  ListItem,
+  ProductListItem,
+  ProductModal,
+  Screen,
+  Text,
+} from "../../components"
 // import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "../../models"
 import { color, spacing } from "../../theme"
@@ -27,6 +34,8 @@ export const MarketScreen = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false)
   const [modalData, setModalData] = useState(null)
 
+  const [products, setProducts] = useState()
+
   const profile = data.profile
 
   const saveMarketData = (data) => {
@@ -40,25 +49,32 @@ export const MarketScreen = ({ navigation }) => {
       saveData: (data) => saveMarketData(data),
     })
 
-  // axios
-  //   .get("http://192.168.29.110:8080/api/product")
-  //   .then((res) => console.log(res.data))
-  //   .catch((err) => console.log(err))
+  useEffect(() => {
+    axios
+      .get("http://192.168.29.110:8080/api/product")
+      .then((res) => {
+        const filteredResult = res.data.product.filter((i) => i.type === "Farm")
+        setProducts(filteredResult)
+      })
+      .catch((err) => console.log(err))
+  }, [])
 
   return (
     <View style={FULL}>
       <Screen preset="fixed" backgroundColor={color.palette.offWhite}>
-        <ProductModal
-          modalVisible={modalVisible}
-          setModalVisible={setModalVisible}
-          modalData={modalData}
-        />
+        {products && (
+          <ProductModal
+            modalVisible={modalVisible}
+            setModalVisible={setModalVisible}
+            modalData={modalData}
+          />
+        )}
         <FlatList
           contentContainerStyle={FLAT_LIST}
-          data={marketData}
+          data={products}
           keyExtractor={(item) => String(item.id)}
           renderItem={({ item }) => (
-            <ListItem
+            <ProductListItem
               {...item}
               onPress={() => {
                 setModalVisible(true)
