@@ -2,6 +2,8 @@
 #
 .DS_Store
 
+node_modules
+
 # Xcode
 #
 build/
@@ -82,3 +84,5 @@ web-build/
 # Configurations
 app/config/env.*.js
 !env.js
+
+**/node_modules

@@ -1,4 +1,4 @@
-import React, { FC } from "react"
+import React, { FC, useState } from "react"
 import { observer } from "mobx-react-lite"
 import { ImageStyle, TextStyle, View, ViewStyle } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
@@ -80,6 +80,7 @@ export const LoginScreen: FC<StackScreenProps<NavigatorParamList, "login">> = ob
   ({ navigation }) => {
     const signInScreen = () => navigation.navigate("signin")
     const signUpScreen = () => navigation.navigate("signup")
+
     return (
       <Screen style={ROOT} preset="scroll">
         <View style={HEADER}>

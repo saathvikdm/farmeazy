@@ -12,6 +12,8 @@ import data from "../../store/store.json"
 import { FlatList } from "react-native-gesture-handler"
 import { FloatingAction } from "react-native-floating-action"
 
+import axios from "axios"
+
 const FULL: ViewStyle = {
   flex: 1,
 }
@@ -37,6 +39,11 @@ export const MarketScreen = ({ navigation }) => {
       marketData,
       saveData: (data) => saveMarketData(data),
     })
+
+  // axios
+  //   .get("http://192.168.29.110:8080/api/product")
+  //   .then((res) => console.log(res.data))
+  //   .catch((err) => console.log(err))
 
   return (
     <View style={FULL}>
