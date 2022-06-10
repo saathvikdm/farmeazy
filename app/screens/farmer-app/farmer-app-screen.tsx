@@ -36,12 +36,12 @@ export const FarmerAppScreen: FC<StackScreenProps<NavigatorParamList, "farmerApp
                   color={focused ? "#04C5B9" : "#04c5b9a6"}
                 />
               )
+            } else if (route.name === "Buy/Rent") {
+              return <Entypo name="tools" size={24} color={focused ? "#04C5B9" : "#04c5b9a6"} />
             } else if (route.name === "My Listings") {
               return (
                 <Ionicons name="ios-list" size={size} color={focused ? "#04C5B9" : "#04c5b9a6"} />
               )
-            } else if (route.name === "Buy/Rent") {
-              return <Entypo name="tools" size={24} color={focused ? "#04C5B9" : "#04c5b9a6"} />
             } else if (route.name === "Profile") {
               return <AntDesign name="user" size={24} color={focused ? "#04C5B9" : "#04c5b9a6"} />
             }
@@ -51,8 +51,8 @@ export const FarmerAppScreen: FC<StackScreenProps<NavigatorParamList, "farmerApp
         })}
       >
         <Tab.Screen name="Market" component={MarketScreen} />
-        <Tab.Screen name="My Listings" component={ListingScreen} />
         <Tab.Screen name="Buy/Rent" component={BuyRentScreen} />
+        <Tab.Screen name="My Listings" component={ListingScreen} />
         <Tab.Screen name="Profile" component={ProfileScreen} />
       </Tab.Navigator>
     )

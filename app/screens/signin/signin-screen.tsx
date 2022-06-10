@@ -7,6 +7,9 @@ import { Button, Header, Screen, Switch, Text, TextField } from "../../component
 // import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "../../models"
 import { color, spacing, typography } from "../../theme"
+import axios from "axios"
+import AsyncStorage from "@react-native-async-storage/async-storage"
+import connectionUrl from "../../connection.js"
 
 const FULL: ViewStyle = { flex: 1 }
 const CONTAINER: ViewStyle = {
@@ -73,19 +76,36 @@ const BUTTON_TEXT: TextStyle = {
 
 export const SigninScreen: FC<StackScreenProps<NavigatorParamList, "signin">> = observer(
   ({ navigation }) => {
-    const [toggle, setToggle] = useState(false)
+    // const [toggle, setToggle] = useState(false)
+    const [username, setUsername] = useState<string>("")
+    const [password, setPassword] = useState<string>("")
 
-    const onTogglePress = () => {
-      setToggle(!toggle)
-      return toggle
-    }
+    // const onTogglePress = () => {
+    //   setToggle(!toggle)
+    //   return toggle
+    // }
 
-    const handleInputChange = (text) => {
-      console.log(text)
+    const handleSignIn = async () => {
+      const data = {
+        email: username,
+        password,
+      }
+
+      try {
+        const res = await axios.post("users/login", data)
+        await AsyncStorage.setItem("token", res.data.token)
+        await AsyncStorage.setItem("userID", res.data.user.id.toString())
+        console.log("Successfully logged in!")
+        let token = null
+        token = await AsyncStorage.getItem("token")
+        if (token) navigation.navigate("farmerApp")
+      } catch (err) {
+        console.log(err)
+        alert("Email or Password is wrong.")
+      }
     }
 
     const goBack = () => navigation.goBack()
-    const nextScreen = () => navigation.navigate("farmerApp")
 
     return (
       <View testID="SignInScreen" style={FULL}>
@@ -102,23 +122,25 @@ export const SigninScreen: FC<StackScreenProps<NavigatorParamList, "signin">> = 
             <TextField
               labelTx="signInScreen.emailField"
               placeholderTx="signInScreen.emailPlaceHolder"
-              onChangeText={(text) => handleInputChange(text)}
+              onChangeText={(text) => setUsername(text)}
             />
             <TextField
               labelTx="signInScreen.passwordField"
               placeholderTx="signInScreen.passwordPlaceholder"
+              secureTextEntry={true}
+              onChangeText={(text) => setPassword(text)}
             />
-            <View style={REMEMBER_TOGGLE}>
+            {/* <View style={REMEMBER_TOGGLE}>
               <Text style={REMEMBER_TOGGLE_TEXT} tx="signInScreen.rememberMe" />
               <Switch value={toggle} onToggle={onTogglePress} />
-            </View>
+            </View> */}
           </View>
           <View>
             <Button
               style={BUTTON}
               textStyle={[BUTTON_TEXT]}
               tx="signInScreen.signinBtn"
-              onPress={nextScreen}
+              onPress={handleSignIn}
             />
           </View>
         </Screen>

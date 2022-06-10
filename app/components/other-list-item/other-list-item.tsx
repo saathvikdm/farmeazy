@@ -64,6 +64,7 @@ const LIST_PRICE: TextStyle = {
   fontWeight: "bold",
   // color: color.palette.deepPurple,
   marginLeft: 0,
+  textAlign: "center",
 }
 
 const LIST_PRICE_CONTAINER: ViewStyle = {
@@ -85,7 +86,7 @@ const LIST_SUB_TEXT: TextStyle = {
   alignSelf: "flex-start",
 }
 
-export const ProductListItem = (props) => {
+export const OtherListItem = (props) => {
   const imgUrl = connectionUrl + props.image.split("8080")[1]
 
   return (
@@ -95,7 +96,10 @@ export const ProductListItem = (props) => {
         <View style={LIST_ITEM}>
           <View style={LIST_ITEM_DETAILS}>
             <Text style={[LIST_TEXT, LIST_SUB_TEXT]}>
-              MOQ: <Text style={LIST_MIN_QTY}>{props.min_qty}</Text> KG
+              <Text style={LIST_MIN_QTY}>
+                {props.type}:
+                {props.type === "Rent" ? `Min ${props.min_qty}Hr` : `Min ${props.min_qty}KG`}
+              </Text>
             </Text>
             <Text style={[LIST_TEXT, LIST_ITEM_NAME]}>{props.name}</Text>
             <View style={LIST_SELLER}>
@@ -110,7 +114,10 @@ export const ProductListItem = (props) => {
             </View>
           </View>
           <View style={LIST_PRICE_CONTAINER}>
-            <Text style={[LIST_TEXT, LIST_PRICE]}>₹{props.price}/KG</Text>
+            <Text style={[LIST_TEXT, LIST_PRICE]}>
+              ₹{props.price}
+              {props.type === "Rent" ? "/Hr" : "/KG"}
+            </Text>
           </View>
         </View>
       </View>

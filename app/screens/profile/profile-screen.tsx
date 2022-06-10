@@ -13,6 +13,10 @@ import {
 } from "@expo/vector-icons"
 
 import { profile } from "../../store/store.json"
+import axios from "axios"
+import AsyncStorage from "@react-native-async-storage/async-storage"
+import connectionUrl from "../../connection.js"
+import { Profile } from "../../components"
 
 const CONTAINER: ViewStyle = {
   justifyContent: "center",
@@ -22,16 +26,6 @@ const TEXT: TextStyle = {
   fontFamily: typography.primary,
   fontSize: 14,
   color: color.primary,
-}
-
-export interface ProfileProps {
-  name: string
-  ph: string
-  age: number
-  sex: string
-  location: string
-  type: string
-  image: string
 }
 
 const PROFILE_CONTAINER: ViewStyle = {
@@ -77,27 +71,39 @@ const PROFILE_FOOTER: TextStyle = {
   padding: spacing[4],
 }
 
-export const ProfileScreen = () => {
+export const ProfileScreen = ({ navigation }) => {
+  const [user, setUser] = React.useState()
+  const [userID, setUserID] = React.useState("")
+  const [loading, setloading] = React.useState(true)
+
+  React.useEffect(() => {
+    ;(async () => {
+      const userID = await AsyncStorage.getItem("userID")
+      setUserID(userID)
+      // console.log(userID)
+    })()
+  }, [])
+
+  React.useEffect(() => {
+    axios
+      .get(`users/${userID}`)
+      .then((res) => {
+        setUser(res.data.user[0])
+        setloading(false)
+      })
+      .catch((err) => console.log(err))
+  }, [userID])
+
+  const handleLogout = async () => {
+    await AsyncStorage.removeItem("token")
+    await AsyncStorage.removeItem("userID")
+    navigation.navigate("signin")
+  }
+
   return (
     <View>
-      <View style={PROFILE_CONTAINER}>
-        <Image source={{ uri: profile.image }} style={IMAGE} />
-        <View style={PROFILE_ITEM}>
-          <Text style={[PROFILE_TEXT, PROFILE_TEXT_NAME]}>{profile.name}</Text>
-          <Text style={PROFILE_TEXT}>
-            <FontAwesome name="phone" size={16} color="black" /> {` `}Phone: {profile.ph}
-          </Text>
-          <Text style={PROFILE_TEXT}>
-            <Ionicons name="time-outline" size={16} color="black" /> Age: {profile.age}
-          </Text>
-          <Text style={PROFILE_TEXT}>
-            <AntDesign name="user" size={16} color="black" /> Sex: {profile.sex}
-          </Text>
-          <Text style={PROFILE_TEXT}>
-            <Entypo name="location-pin" size={16} color="black" /> Location: {profile.location}
-          </Text>
-        </View>
-      </View>
+      {loading ? <Text>loading...</Text> : <Profile user={user} />}
+      {/* {user && <Profile user={user} />} */}
       <View>
         <Text style={PROFILE_MENU_OPTION}>
           <AntDesign name="user" size={16} color="black" /> Edit Profile Details
@@ -110,6 +116,9 @@ export const ProfileScreen = () => {
         </Text>
         <Text style={PROFILE_MENU_OPTION}>
           <AntDesign name="codesquareo" size={16} color="black" /> Credits
+        </Text>
+        <Text style={PROFILE_MENU_OPTION} onPress={handleLogout}>
+          <AntDesign name="logout" size={16} color="black" /> Logout
         </Text>
       </View>
       <Text style={PROFILE_FOOTER}>FarmEazy Ver 0.0.1</Text>

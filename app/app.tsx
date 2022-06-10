@@ -19,12 +19,17 @@ import { AppNavigator, useNavigationPersistence } from "./navigators"
 import { RootStore, RootStoreProvider, setupRootStore } from "./models"
 import { ToggleStorybook } from "../storybook/toggle-storybook"
 import { ErrorBoundary } from "./screens/error/error-boundary"
+import axios from "axios"
+import connectionUrl from "./connection.js"
+import AsyncStorage from "@react-native-async-storage/async-storage"
 
 // This puts screens in a native ViewController or Activity. If you want fully native
 // stack navigation, use `createNativeStackNavigator` in place of `createStackNavigator`:
 // https://github.com/kmagiera/react-native-screens#using-native-stack-navigator
 
 export const NAVIGATION_PERSISTENCE_KEY = "NAVIGATION_STATE"
+
+axios.defaults.baseURL = connectionUrl + "api/"
 
 /**
  * This is the root component of our app.
@@ -42,6 +47,14 @@ function App() {
     ;(async () => {
       await initFonts() // expo
       setupRootStore().then(setRootStore)
+    })()
+    ;(async function () {
+      const token = await AsyncStorage.getItem("token")
+      if (token) {
+        axios.defaults.headers.common["Authorization"] = token
+      } else {
+        axios.defaults.headers.common["Authorization"] = null
+      }
     })()
   }, [])
 

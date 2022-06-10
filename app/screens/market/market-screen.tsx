@@ -21,6 +21,8 @@ import { FloatingAction } from "react-native-floating-action"
 
 import axios from "axios"
 
+import connectionUrl from "../../connection.js"
+
 const FULL: ViewStyle = {
   flex: 1,
 }
@@ -51,7 +53,7 @@ export const MarketScreen = ({ navigation }) => {
 
   useEffect(() => {
     axios
-      .get("http://192.168.29.110:8080/api/product")
+      .get(connectionUrl + "api/product")
       .then((res) => {
         const filteredResult = res.data.product.filter((i) => i.type === "Farm")
         setProducts(filteredResult)
