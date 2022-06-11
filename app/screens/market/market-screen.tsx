@@ -32,26 +32,22 @@ const FLAT_LIST: ViewStyle = {
 }
 
 export const MarketScreen = ({ navigation }) => {
-  const [marketData, setMarketData] = useState(data.market)
   const [modalVisible, setModalVisible] = useState(false)
   const [modalData, setModalData] = useState(null)
 
   const [products, setProducts] = useState()
 
-  const profile = data.profile
-
-  const saveMarketData = (data) => {
-    setMarketData([...marketData, data])
-  }
-
-  const nextScreen = () =>
-    navigation.navigate("addProduct", {
-      profile,
-      marketData,
-      saveData: (data) => saveMarketData(data),
-    })
+  const nextScreen = () => navigation.navigate("addProduct")
 
   useEffect(() => {
+    fetchData()
+    const willFocusSubscription = navigation.addListener("focus", () => {
+      fetchData()
+    })
+    return willFocusSubscription
+  }, [])
+
+  const fetchData = () => {
     axios
       .get(connectionUrl + "api/product")
       .then((res) => {
@@ -59,7 +55,7 @@ export const MarketScreen = ({ navigation }) => {
         setProducts(filteredResult)
       })
       .catch((err) => console.log(err))
-  }, [])
+  }
 
   return (
     <View style={FULL}>

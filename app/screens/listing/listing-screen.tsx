@@ -38,6 +38,14 @@ export const ListingScreen = ({ navigation }) => {
   }, [])
 
   useEffect(() => {
+    fetchData()
+    const willFocusSubscription = navigation.addListener("focus", () => {
+      fetchData()
+    })
+    return willFocusSubscription
+  }, [userID])
+
+  const fetchData = () => {
     axios
       .get(connectionUrl + "api/product")
       .then((res) => {
@@ -46,7 +54,7 @@ export const ListingScreen = ({ navigation }) => {
         setloading(false)
       })
       .catch((err) => console.log(err))
-  }, [userID])
+  }
 
   return (
     <View testID="DemoListScreen" style={FULL}>

@@ -1,12 +1,12 @@
-import React, { FC, useState } from "react"
-import { observer } from "mobx-react-lite"
-import { TextStyle, View, ViewStyle } from "react-native"
-import { StackScreenProps } from "@react-navigation/stack"
-import { NavigatorParamList } from "../../navigators"
+import React, { useState, useEffect } from "react"
+import { Image, TextStyle, View, ViewStyle } from "react-native"
 import { Button, Header, Screen, Text, TextField } from "../../components"
-// import { useNavigation } from "@react-navigation/native"
-// import { useStores } from "../../models"
 import { color, spacing, typography } from "../../theme"
+import AsyncStorage from "@react-native-async-storage/async-storage"
+import axios from "axios"
+import * as ImagePicker from "expo-image-picker"
+import { AntDesign } from "@expo/vector-icons"
+import { ScrollView } from "react-native-gesture-handler"
 
 const CONTAINER: ViewStyle = {
   backgroundColor: color.palette.white,
@@ -36,6 +36,15 @@ const TEXT: TextStyle = {
   fontFamily: typography.primary,
 }
 
+const TEXT_UPLOADED: TextStyle = {
+  color: "green",
+  fontFamily: typography.primary,
+}
+
+const FULL: ViewStyle = { flex: 1 }
+
+const JUSTIFY: ViewStyle = { justifyContent: "center", alignItems: "center" }
+
 const BOLD: TextStyle = { fontWeight: "bold" }
 
 const BUTTON: ViewStyle = {
@@ -45,39 +54,86 @@ const BUTTON: ViewStyle = {
   marginVertical: 10,
 }
 
+const UPLOAD_BUTTON: ViewStyle = {
+  paddingVertical: spacing[4],
+  paddingHorizontal: spacing[4],
+  backgroundColor: color.palette.white,
+  marginVertical: 10,
+}
+
 const BUTTON_TEXT: TextStyle = {
   ...TEXT,
   fontSize: 16,
 }
 
-export const AddProductScreen = ({ route, navigation }) => {
-  const { profile, marketData, saveData } = route.params
-
-  const data = {
-    id: marketData.length + 1,
-    image: "https://cdn.britannica.com/17/196817-050-6A15DAC3/vegetables.jpg",
+export const AddProductScreen = ({ navigation }) => {
+  const defaultValues = {
     name: "",
-    location: profile.location,
-    minq: "",
-    phone: profile.ph,
-    price: "",
-    seller: profile.name,
+    type: "Farm",
+    desc: "",
+    price: undefined,
+    min_qty: undefined,
+    avl_qty: undefined,
+    UserId: undefined,
+  }
+  const [product, setProduct] = useState(defaultValues)
+  const [image, setImage] = useState(null)
+
+  const goBack = () => navigation.goBack()
+
+  useEffect(() => {
+    ;(async () => {
+      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync()
+      if (status !== "granted") {
+        alert("Sorry, we need camera roll permissions to make this work!")
+      }
+    })()
+  }, [])
+
+  const pickImage = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    })
+
+    setImage(result)
+    if (!result.cancelled) {
+      setImage(result.uri)
+    }
   }
 
-  const [productName, setProductName] = useState("")
-  const [productMinq, setProductMinq] = useState("")
-  const [productPrice, setProductPrice] = useState("")
+  const handleAddProduct = async () => {
+    const userID = await AsyncStorage.getItem("userID")
+    const token = await AsyncStorage.getItem("token")
 
-  const goBack = () => {
-    data.name = productName
-    data.minq = productMinq
-    data.price = productPrice
+    setProduct({ ...product, UserId: userID })
 
-    console.log(data)
+    try {
+      const config = {
+        headers: {
+          Authorization: token,
+          "Content-Type": "multipart/form-data",
+        },
+      }
 
-    saveData(data)
-
-    navigation.goBack()
+      const formData = new FormData()
+      for (const key in product) {
+        formData.append(key, product[key])
+      }
+      formData.append("image", { uri: image, type: "image/jpg", name: "productImage" })
+      const res = await axios.post(`product/create`, formData, config)
+      if (res.status === 200) {
+        console.log("Product Added to Marketplace")
+        navigation.goBack()
+      } else {
+        console.log("Error")
+      }
+    } catch (err) {
+      console.log(err)
+      alert("Error Occured: Try again later!")
+    }
   }
 
   return (
@@ -89,34 +145,65 @@ export const AddProductScreen = ({ route, navigation }) => {
         style={HEADER}
         titleStyle={HEADER_TITLE}
       />
-      <View>
-        <TextField
-          value={productName}
-          labelTx="addProductScreen.productName"
-          placeholderTx="addProductScreen.productNamePH"
-          onChangeText={(text) => setProductName(text)}
-        />
-        <TextField
-          value={productMinq}
-          labelTx="addProductScreen.minq"
-          placeholderTx="addProductScreen.minqPH"
-          onChangeText={(text) => setProductMinq(text)}
-          keyboardType="number-pad"
-        />
-        <TextField
-          value={productPrice}
-          labelTx="addProductScreen.price"
-          placeholderTx="addProductScreen.pricePH"
-          onChangeText={(text) => setProductPrice(text)}
-          keyboardType="number-pad"
-        />
+      <View style={FULL}>
+        <ScrollView>
+          <TextField
+            value={product.name}
+            label="Product Name"
+            placeholder="Enter Product Name"
+            onChangeText={(text) => setProduct({ ...product, name: text })}
+          />
+          <TextField
+            value={product.desc}
+            label="Product Description"
+            placeholder="Enter Product Description"
+            onChangeText={(text) => setProduct({ ...product, desc: text })}
+          />
+          <TextField
+            value={product.price}
+            label="Product Price"
+            placeholder="Enter Product Price"
+            onChangeText={(text) => setProduct({ ...product, price: text })}
+            keyboardType="number-pad"
+          />
+          <TextField
+            value={product.min_qty}
+            label="Min Purchase Quantity (in KG)"
+            placeholder="Enter Min Purchase Quantity"
+            onChangeText={(text) => setProduct({ ...product, min_qty: text })}
+            keyboardType="number-pad"
+          />
+          <TextField
+            value={product.avl_qty}
+            label="Total Available Quantity (in KG)"
+            placeholder="Enter Total Available Quantity"
+            onChangeText={(text) => setProduct({ ...product, avl_qty: text })}
+            keyboardType="number-pad"
+          />
+          <Button style={UPLOAD_BUTTON} onPress={pickImage}>
+            {image ? (
+              <Text style={TEXT_UPLOADED}>
+                Image Selected&nbsp;
+                <AntDesign name="checkcircleo" size={24} color="green" />
+              </Text>
+            ) : (
+              <Text style={TEXT}>
+                Upload Image&nbsp;
+                <AntDesign name="upload" size={24} color="black" />
+              </Text>
+            )}
+          </Button>
+          <View style={JUSTIFY}>
+            {/* {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />} */}
+          </View>
+        </ScrollView>
       </View>
       <View>
         <Button
           style={BUTTON}
           textStyle={[BUTTON_TEXT]}
           text="Add Product to Market"
-          onPress={goBack}
+          onPress={handleAddProduct}
         />
       </View>
     </Screen>

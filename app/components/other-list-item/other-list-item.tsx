@@ -86,6 +86,10 @@ const LIST_SUB_TEXT: TextStyle = {
   alignSelf: "flex-start",
 }
 
+const FLEX_ROW: ViewStyle = {
+  flexDirection: "row",
+}
+
 export const OtherListItem = (props) => {
   const imgUrl = connectionUrl + props.image.split("8080")[1]
 
@@ -95,12 +99,18 @@ export const OtherListItem = (props) => {
         <Image source={{ uri: imgUrl }} style={IMAGE} />
         <View style={LIST_ITEM}>
           <View style={LIST_ITEM_DETAILS}>
-            <Text style={[LIST_TEXT, LIST_SUB_TEXT]}>
-              <Text style={LIST_MIN_QTY}>
-                {props.type}:
-                {props.type === "Rent" ? `Min ${props.min_qty}Hr` : `Min ${props.min_qty}KG`}
+            <View style={FLEX_ROW}>
+              {props.type === "Rent" && (
+                <Text style={[LIST_TEXT, LIST_SUB_TEXT, LIST_MIN_QTY]}>Rent</Text>
+              )}
+              <Text style={[LIST_TEXT, LIST_SUB_TEXT]}>
+                Min:{" "}
+                <Text style={LIST_MIN_QTY}>
+                  {props.type === "Rent" ? `${props.min_qty}` : `${props.min_qty}`}
+                </Text>
+                {props.type === "Rent" ? `Hr` : `KG`}
               </Text>
-            </Text>
+            </View>
             <Text style={[LIST_TEXT, LIST_ITEM_NAME]}>{props.name}</Text>
             <View style={LIST_SELLER}>
               <AntDesign name="user" size={12} color="black" />

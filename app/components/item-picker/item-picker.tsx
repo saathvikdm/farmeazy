@@ -20,46 +20,10 @@ const PRESETS: { [name: string]: ViewStyle } = {
   default: {},
 }
 
-export interface ItemPickerProps {
-  placeholderTx?: TxKeyPath
-
-  /**
-   * The Placeholder text if no placeholderTx is provided.
-   */
-  placeholder?: string
-
-  /**
-   * The label i18n key.
-   */
-  labelTx?: TxKeyPath
-
-  /**
-   * The label text if no labelTx is provided.
-   */
-  label?: string
-
-  /**
-   * Optional container style overrides useful for margins & padding.
-   */
-  style?: StyleProp<ViewStyle>
-
-  /**
-   * Optional style overrides for the input.
-   */
-  inputStyle?: StyleProp<TextStyle>
-
-  /**
-   * Various look & feels.
-   */
-  preset?: keyof typeof PRESETS
-
-  forwardedRef?: any
-}
-
 /**
  * Describe your component here
  */
-export function ItemPicker(props: ItemPickerProps) {
+export function ItemPicker(props) {
   const {
     placeholderTx,
     placeholder,
@@ -69,32 +33,28 @@ export function ItemPicker(props: ItemPickerProps) {
     style: styleOverride,
     inputStyle: inputStyleOverride,
     forwardedRef,
+    UserTypeId,
+    setUserTypeID,
     ...rest
   } = props
 
   const containerStyles = [CONTAINER, PRESETS[preset], styleOverride]
 
-  const [state, setState] = React.useState("Select account type")
-
   return (
     <View style={containerStyles}>
       <Text preset="fieldLabel" tx={labelTx} text={label} />
-      <Picker
-        {...rest}
-        ref={forwardedRef}
-        selectedValue={state}
-        onValueChange={(itemValue, itemIndex) => setState(itemValue)}
-      >
-        <Picker.Item
-          style={{ color: color.palette.blackT }}
-          label="Select an account type"
-          value={null}
-          enabled={false}
-        />
-        <Picker.Item label="Farmer" value="farmer" />
-        <Picker.Item label="Renter/Seller" value="renterSeller" />
-        <Picker.Item label="Buyer" value="buyer" />
-      </Picker>
+      {UserTypeId && (
+        <Picker
+          {...rest}
+          ref={forwardedRef}
+          selectedValue={UserTypeId}
+          onValueChange={(itemValue, itemIndex) => setUserTypeID(itemValue)}
+        >
+          <Picker.Item label="Farmer" value="1" />
+          <Picker.Item label="Renter/Seller" value="3" />
+          <Picker.Item label="Buyer" value="2" />
+        </Picker>
+      )}
     </View>
   )
 }

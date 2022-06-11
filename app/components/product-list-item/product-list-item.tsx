@@ -64,6 +64,7 @@ const LIST_PRICE: TextStyle = {
   fontWeight: "bold",
   // color: color.palette.deepPurple,
   marginLeft: 0,
+  textAlign: "center",
 }
 
 const LIST_PRICE_CONTAINER: ViewStyle = {

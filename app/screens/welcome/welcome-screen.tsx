@@ -13,12 +13,16 @@ import {
 import { color, spacing, typography } from "../../theme"
 import { NavigatorParamList } from "../../navigators"
 
+import axios from "axios"
+import AsyncStorage from "@react-native-async-storage/async-storage"
+import connectionUrl from "../../connection.js"
+
 const FULL: ViewStyle = { flex: 1 }
 const CONTAINER: ViewStyle = {
   backgroundColor: color.transparent,
   paddingHorizontal: spacing[4],
   flex: 1,
-  justifyContent: "center"
+  justifyContent: "center",
 }
 const TEXT: TextStyle = {
   color: color.palette.white,
@@ -95,30 +99,28 @@ const FOOTER_CONTENT: ViewStyle = {
   backgroundColor: color.palette.primaryGreen,
 }
 
-export const WelcomeScreen: FC<StackScreenProps<NavigatorParamList, "welcome">> = observer(
-  ({ navigation }) => {
-    const nextScreen = () => navigation.navigate("login")
+export const WelcomeScreen = ({ navigation }) => {
+  const nextScreen = () => navigation.navigate("signin")
 
-    return (
-      <View testID="WelcomeScreen" style={FULL}>
-        <Screen style={CONTAINER} preset="scroll" backgroundColor={color.palette.primaryGreen}>
-          {/* <Header headerTx="welcomeScreen.poweredBy" style={HEADER} titleStyle={HEADER_TITLE} /> */}
-          <Text style={TITLE} preset="header" tx="welcomeScreen.farmeazy" />
-          <Text style={SUBTITLE} tx="welcomeScreen.buySellRent" />
-          {/* <Image source={bowserLogo} style={BOWSER} /> */}
-        </Screen>
-        <SafeAreaView>
-          <View style={FOOTER_CONTENT}>
-            <Button
-              testID="next-screen-button"
-              style={CONTINUE}
-              textStyle={CONTINUE_TEXT}
-              tx="welcomeScreen.continue"
-              onPress={nextScreen}
-            />
-          </View>
-        </SafeAreaView>
-      </View>
-    )
-  },
-)
+  return (
+    <View testID="WelcomeScreen" style={FULL}>
+      <Screen style={CONTAINER} preset="scroll" backgroundColor={color.palette.primaryGreen}>
+        {/* <Header headerTx="welcomeScreen.poweredBy" style={HEADER} titleStyle={HEADER_TITLE} /> */}
+        <Text style={TITLE} preset="header" tx="welcomeScreen.farmeazy" />
+        <Text style={SUBTITLE} tx="welcomeScreen.buySellRent" />
+        {/* <Image source={bowserLogo} style={BOWSER} /> */}
+      </Screen>
+      <SafeAreaView>
+        <View style={FOOTER_CONTENT}>
+          <Button
+            testID="next-screen-button"
+            style={CONTINUE}
+            textStyle={CONTINUE_TEXT}
+            tx="welcomeScreen.continue"
+            onPress={nextScreen}
+          />
+        </View>
+      </SafeAreaView>
+    </View>
+  )
+}

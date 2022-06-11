@@ -36,9 +36,9 @@ const PROFILE_CONTAINER: ViewStyle = {
   marginVertical: 2,
 }
 const IMAGE: ImageStyle = {
-  borderRadius: 35,
-  height: 80,
-  width: 80,
+  borderRadius: 100,
+  height: 100,
+  width: 100,
 }
 
 const PROFILE_TEXT: TextStyle = {
@@ -73,26 +73,35 @@ const PROFILE_FOOTER: TextStyle = {
 
 export const ProfileScreen = ({ navigation }) => {
   const [user, setUser] = React.useState()
-  const [userID, setUserID] = React.useState("")
   const [loading, setloading] = React.useState(true)
+  const [updateImage, setUpdateImage] = React.useState(false)
 
   React.useEffect(() => {
     ;(async () => {
       const userID = await AsyncStorage.getItem("userID")
-      setUserID(userID)
-      // console.log(userID)
-    })()
-  }, [])
-
-  React.useEffect(() => {
-    axios
-      .get(`users/${userID}`)
-      .then((res) => {
-        setUser(res.data.user[0])
-        setloading(false)
+      const token = await AsyncStorage.getItem("token")
+      fetchData(userID, token)
+      const willFocusSubscription = navigation.addListener("focus", () => {
+        fetchData(userID, token)
       })
-      .catch((err) => console.log(err))
-  }, [userID])
+      return willFocusSubscription
+    })()
+  }, [updateImage])
+
+  const fetchData = async (userID, token) => {
+    const config = {
+      headers: {
+        Authorization: token,
+      },
+    }
+    try {
+      const res = await axios.get(`users/${userID}`, config)
+      setUser(res.data.user[0])
+      setloading(false)
+    } catch (err) {
+      console.log(err)
+    }
+  }
 
   const handleLogout = async () => {
     await AsyncStorage.removeItem("token")
@@ -102,21 +111,25 @@ export const ProfileScreen = ({ navigation }) => {
 
   return (
     <View>
-      {loading ? <Text>loading...</Text> : <Profile user={user} />}
+      {loading ? <Text>loading...</Text> : <Profile user={user} setUpdateImage={setUpdateImage} />}
       {/* {user && <Profile user={user} />} */}
       <View>
-        <Text style={PROFILE_MENU_OPTION}>
+        <Text style={PROFILE_MENU_OPTION} onPress={() => navigation.navigate("profileEdit")}>
           <AntDesign name="user" size={16} color="black" /> Edit Profile Details
         </Text>
-        <Text style={PROFILE_MENU_OPTION}>
-          <MaterialCommunityIcons name="email-edit-outline" size={16} color="black" /> Update Email
+        <Text
+          style={PROFILE_MENU_OPTION}
+          onPress={() => navigation.navigate("profilePasswordEdit")}
+        >
+          <MaterialCommunityIcons name="form-textbox-password" size={16} color="black" /> Change
+          Password
         </Text>
-        <Text style={PROFILE_MENU_OPTION}>
+        <Text style={PROFILE_MENU_OPTION} onPress={() => navigation.navigate("profileSupport")}>
           <MaterialIcons name="support-agent" size={16} color="black" /> Contact Support
         </Text>
-        <Text style={PROFILE_MENU_OPTION}>
+        {/* <Text style={PROFILE_MENU_OPTION}>
           <AntDesign name="codesquareo" size={16} color="black" /> Credits
-        </Text>
+        </Text> */}
         <Text style={PROFILE_MENU_OPTION} onPress={handleLogout}>
           <AntDesign name="logout" size={16} color="black" /> Logout
         </Text>
