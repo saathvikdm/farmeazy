@@ -14,7 +14,7 @@ import { observer } from "mobx-react-lite"
 import { color, spacing, typography } from "../../theme"
 import { Text } from "../text/text"
 import { Button } from "../button/button"
-import { AntDesign, Entypo, Ionicons } from "@expo/vector-icons"
+import { AntDesign, Entypo, FontAwesome, Ionicons } from "@expo/vector-icons"
 import { Header } from "../header/header"
 import { navigationRef } from "../../navigators"
 import { TextInput } from "react-native-gesture-handler"
@@ -224,6 +224,42 @@ export const ProductModal = ({ modalVisible = false, setModalVisible, modalData 
     }
   }
 
+  const handleDeleteOrder = async () => {
+    const userID = await AsyncStorage.getItem("userID")
+    const token = await AsyncStorage.getItem("token")
+
+    Alert.alert("Delete Product", "Are you sure?", [
+      {
+        text: "Cancel",
+        onPress: () => console.log("Cancel Pressed"),
+        style: "cancel",
+      },
+      {
+        text: "Yes",
+        onPress: async () => {
+          try {
+            const config = {
+              headers: {
+                Authorization: token,
+              },
+            }
+            const res = await axios.delete(`product/${modalData.id}`, config)
+            if (res.status === 200) {
+              console.log("Product Deleted Successfully!")
+              alert("Product Deleted Successfully!")
+              setModalVisible(!modalVisible)
+            } else {
+              console.log("Error")
+            }
+          } catch (err) {
+            console.log(err)
+            alert("Error Occured: Try again later!")
+          }
+        },
+      },
+    ])
+  }
+
   return (
     <Modal
       animationType="slide"
@@ -253,26 +289,38 @@ export const ProductModal = ({ modalVisible = false, setModalVisible, modalData 
               <Text style={[TEXT, PRODUCT_MOQ]}>
                 Avl. order quantity: {modalData.avl_qty} KG(s)
               </Text>
-              <View style={PRODUCT_PRICE}>
-                <Text style={[TEXT, PRODUCT_SUBHEADER]}>
-                  <AntDesign
-                    onPress={() => setqty(qty - 1)}
-                    name="minussquare"
-                    size={32}
-                    color={color.palette.primaryGreenT}
-                  />
-                  <Text style={COUNTER_TEXT}> {qty} </Text>
-                  <AntDesign
-                    onPress={() => setqty(qty + 1)}
-                    name="plussquare"
-                    size={32}
-                    color={color.palette.primaryGreenT}
-                  />
-                </Text>
-                <Text style={[TEXT, PRODUCT_SUBHEADER]}>
-                  ₹<Text style={[TEXT_BOLD, { fontSize: 32 }]}>{modalData.price * qty}</Text>
-                </Text>
-              </View>
+              {modalData.UserId.toString() !== userID ? (
+                <View style={PRODUCT_PRICE}>
+                  <Text style={[TEXT, PRODUCT_SUBHEADER]}>
+                    <AntDesign
+                      onPress={() => setqty(qty - 1)}
+                      name="minussquare"
+                      size={32}
+                      color={color.palette.primaryGreenT}
+                    />
+                    <Text style={COUNTER_TEXT}> {qty} </Text>
+                    <AntDesign
+                      onPress={() => setqty(qty + 1)}
+                      name="plussquare"
+                      size={32}
+                      color={color.palette.primaryGreenT}
+                    />
+                  </Text>
+                  <Text style={[TEXT, PRODUCT_SUBHEADER]}>
+                    ₹<Text style={[TEXT_BOLD, { fontSize: 32 }]}>{modalData.price * qty}</Text>
+                  </Text>
+                </View>
+              ) : (
+                <View style={PRODUCT_PRICE}>
+                  <Text style={[TEXT, PRODUCT_SUBHEADER]}>
+                    <Text style={TEXT}>List Price: ₹</Text>
+                    <Text style={[TEXT_BOLD, { fontSize: 32 }]}>{modalData.price * qty}</Text>
+                  </Text>
+                  <Pressable onPress={() => handleDeleteOrder()}>
+                    <FontAwesome name="trash-o" size={32} color={color.palette.primaryGreenT} />
+                  </Pressable>
+                </View>
+              )}
               <View style={PRODUCT_DETAILS}>
                 <Text style={[TEXT, PRODUCT_MOQ]}>Product Description</Text>
                 <View style={PRODUCT_SELLER}>

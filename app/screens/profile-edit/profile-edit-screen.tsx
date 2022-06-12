@@ -84,6 +84,7 @@ export const ProfileEditScreen = ({ navigation }) => {
   const [phone, setphone] = useState<string>("")
   const [address, setaddress] = useState("")
   const [city, setcity] = useState("")
+  const [image, setImage] = useState("")
   const [userID, setUserID] = React.useState("")
   const [token, settoken] = React.useState("")
   const [loading, setloading] = React.useState(true)
@@ -109,6 +110,7 @@ export const ProfileEditScreen = ({ navigation }) => {
         setphone(res.data.user[0].phone)
         setcity(res.data.user[0].city)
         setaddress(res.data.user[0].address)
+        setImage(res.data.user[0].user_image)
         setloading(false)
       } catch (err) {
         console.log(err)
@@ -124,15 +126,23 @@ export const ProfileEditScreen = ({ navigation }) => {
       phone,
       address,
       city,
+      image,
     }
 
     try {
       const config = {
         headers: {
           Authorization: token,
+          "Content-Type": "multipart/form-data",
         },
       }
-      const res = await axios.put(`users/${userID}`, data, config)
+
+      const formData = new FormData()
+      for (const key in data) {
+        formData.append(key, data[key])
+      }
+
+      const res = await axios.put(`users/${userID}`, formData, config)
       console.log("Successfully updated!")
       if (res.status === 200) navigation.goBack()
     } catch (err) {

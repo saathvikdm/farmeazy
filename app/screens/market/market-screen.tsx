@@ -18,6 +18,7 @@ import { color, spacing } from "../../theme"
 import data from "../../store/store.json"
 import { FlatList } from "react-native-gesture-handler"
 import { FloatingAction } from "react-native-floating-action"
+import AsyncStorage from "@react-native-async-storage/async-storage"
 
 import axios from "axios"
 
@@ -36,6 +37,10 @@ export const MarketScreen = ({ navigation }) => {
   const [modalData, setModalData] = useState(null)
 
   const [products, setProducts] = useState()
+
+  const [userID, setUserID] = React.useState("")
+  const [loading, setloading] = React.useState(true)
+  const [user, setUser] = React.useState()
 
   const nextScreen = () => navigation.navigate("addProduct")
 
@@ -56,6 +61,24 @@ export const MarketScreen = ({ navigation }) => {
       })
       .catch((err) => console.log(err))
   }
+
+  React.useEffect(() => {
+    ;(async () => {
+      const userID = await AsyncStorage.getItem("userID")
+      const token = await AsyncStorage.getItem("token")
+      const config = {
+        headers: {
+          Authorization: token,
+        },
+      }
+      try {
+        const res = await axios.get(`users/${userID}`, config)
+        setUser(res.data.user[0])
+      } catch (err) {
+        console.log(err)
+      }
+    })()
+  }, [])
 
   return (
     <View style={FULL}>
@@ -81,7 +104,7 @@ export const MarketScreen = ({ navigation }) => {
             />
           )}
         />
-        <FloatingButton onPress={nextScreen} />
+        {user && user.UserType.name !== "User" && <FloatingButton onPress={nextScreen} />}
       </Screen>
     </View>
   )

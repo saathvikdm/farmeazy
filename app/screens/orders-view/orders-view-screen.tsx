@@ -60,12 +60,11 @@ export const OrdersViewScreen = ({ navigation }) => {
 
   const fetchData = () => {
     axios
-      .get(connectionUrl + "api/order")
+      .get("order")
       .then((res) => {
         const filteredResult = res.data.order.filter(
           (i) => i.UserId.toString() === userID || i.Product.UserId.toString() === userID,
         )
-        console.log(filteredResult)
         setorders(filteredResult)
         setloading(false)
       })

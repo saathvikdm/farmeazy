@@ -3,7 +3,14 @@ import { observer } from "mobx-react-lite"
 import { View, ViewStyle } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../../navigators"
-import { ListItem, OtherListItem, OtherProductModal, Screen, Text } from "../../components"
+import {
+  FloatingButton,
+  ListItem,
+  OtherListItem,
+  OtherProductModal,
+  Screen,
+  Text,
+} from "../../components"
 // import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "../../models"
 import { color, spacing } from "../../theme"
@@ -28,6 +35,7 @@ export const BuyRentScreen = ({ navigation }) => {
   const [products, setProducts] = useState()
   const [userID, setUserID] = React.useState("")
   const [loading, setloading] = React.useState(true)
+  const [user, setUser] = React.useState()
 
   React.useEffect(() => {
     ;(async () => {
@@ -37,6 +45,14 @@ export const BuyRentScreen = ({ navigation }) => {
   }, [])
 
   useEffect(() => {
+    fetchData()
+    const willFocusSubscription = navigation.addListener("focus", () => {
+      fetchData()
+    })
+    return willFocusSubscription
+  }, [userID])
+
+  const fetchData = () => {
     axios
       .get(connectionUrl + "api/product")
       .then((res) => {
@@ -45,7 +61,25 @@ export const BuyRentScreen = ({ navigation }) => {
         setloading(false)
       })
       .catch((err) => console.log(err))
-  }, [userID])
+  }
+
+  React.useEffect(() => {
+    ;(async () => {
+      const userID = await AsyncStorage.getItem("userID")
+      const token = await AsyncStorage.getItem("token")
+      const config = {
+        headers: {
+          Authorization: token,
+        },
+      }
+      try {
+        const res = await axios.get(`users/${userID}`, config)
+        setUser(res.data.user[0])
+      } catch (err) {
+        console.log(err)
+      }
+    })()
+  }, [])
 
   return (
     <View testID="DemoListScreen" style={FULL}>
@@ -74,6 +108,9 @@ export const BuyRentScreen = ({ navigation }) => {
               />
             )}
           />
+          {user && user.UserType.name !== "User" && (
+            <FloatingButton onPress={() => navigation.navigate("addBuyRentProduct")} />
+          )}
         </Screen>
       )}
     </View>
