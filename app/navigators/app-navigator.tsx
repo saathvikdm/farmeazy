@@ -25,6 +25,7 @@ import {
   ProfileEditScreen,
   ProfilePasswordEditScreen,
   ProfileSupportScreen,
+  ProfileDisplayUpdateScreen,
 } from "../screens"
 import { navigationRef, useBackButtonHandler } from "./navigation-utilities"
 
@@ -57,6 +58,7 @@ export type NavigatorParamList = {
   profileEdit: undefined
   profilePasswordEdit: undefined
   profileSupport: undefined
+  profileDisplayUpdate: undefined
   // 🔥 Your screens go here
 }
 
@@ -84,6 +86,7 @@ const AppStack = () => {
       <Stack.Screen name="profileEdit" component={ProfileEditScreen} />
       <Stack.Screen name="profileSupport" component={ProfileSupportScreen} />
       <Stack.Screen name="profilePasswordEdit" component={ProfilePasswordEditScreen} />
+      <Stack.Screen name="profileDisplayUpdate" component={ProfileDisplayUpdateScreen} />
       <Stack.Screen name="demo" component={DemoScreen} />
       <Stack.Screen name="demoList" component={DemoListScreen} />
       <Stack.Screen name="settings" component={SettingsScreen} />

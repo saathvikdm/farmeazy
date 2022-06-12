@@ -119,15 +119,15 @@ export const SignupScreen: FC<StackScreenProps<NavigatorParamList, "signup">> = 
       <View testID="SignUpScreen" style={FULL}>
         <Screen style={CONTAINER} preset="scroll" backgroundColor={color.palette.white}>
           <View style={FULL}>
+            <Header
+              headerTx="signUpScreen.navHeader"
+              leftIcon="back"
+              onLeftPress={goBack}
+              style={HEADER}
+              titleStyle={HEADER_TITLE}
+            />
+            <Text style={TITLE} preset="header" tx="signUpScreen.signUpTitle" />
             <ScrollView>
-              <Header
-                headerTx="signUpScreen.navHeader"
-                leftIcon="back"
-                onLeftPress={goBack}
-                style={HEADER}
-                titleStyle={HEADER_TITLE}
-              />
-              <Text style={TITLE} preset="header" tx="signUpScreen.signUpTitle" />
               <TextField
                 // labelTx="signUpScreen.nameField"
                 label="Firstname"

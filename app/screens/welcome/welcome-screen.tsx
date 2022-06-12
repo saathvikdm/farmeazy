@@ -100,7 +100,7 @@ const FOOTER_CONTENT: ViewStyle = {
 }
 
 export const WelcomeScreen = ({ navigation }) => {
-  const nextScreen = () => navigation.navigate("signin")
+  const nextScreen = () => navigation.navigate("login")
 
   return (
     <View testID="WelcomeScreen" style={FULL}>

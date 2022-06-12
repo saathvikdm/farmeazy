@@ -119,6 +119,12 @@ export const ProfileScreen = ({ navigation }) => {
         </Text>
         <Text
           style={PROFILE_MENU_OPTION}
+          onPress={() => navigation.navigate("profileDisplayUpdate", { user: user })}
+        >
+          <AntDesign name="picture" size={16} color="black" /> Edit Profile Display Picture
+        </Text>
+        <Text
+          style={PROFILE_MENU_OPTION}
           onPress={() => navigation.navigate("profilePasswordEdit")}
         >
           <MaterialCommunityIcons name="form-textbox-password" size={16} color="black" /> Change

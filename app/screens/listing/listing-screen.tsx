@@ -1,6 +1,6 @@
 import React, { FC, useState, useEffect } from "react"
 import { observer } from "mobx-react-lite"
-import { View, ViewStyle } from "react-native"
+import { TextStyle, View, ViewStyle } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../../navigators"
 import { ListItem, ProductListItem, ProductModal, Screen, Text } from "../../components"
@@ -21,6 +21,12 @@ const FULL: ViewStyle = {
 
 const FLAT_LIST: ViewStyle = {
   paddingHorizontal: spacing[0],
+}
+
+const TEXT: TextStyle = {
+  marginTop: spacing[4],
+  textAlign: "center",
+  color: color.palette.black,
 }
 
 export const ListingScreen = ({ navigation }) => {
@@ -69,20 +75,24 @@ export const ListingScreen = ({ navigation }) => {
               modalData={modalData}
             />
           )}
-          <FlatList
-            contentContainerStyle={FLAT_LIST}
-            data={products}
-            keyExtractor={(item) => String(item.id)}
-            renderItem={({ item }) => (
-              <ProductListItem
-                {...item}
-                onPress={() => {
-                  setModalVisible(true)
-                  setModalData(item)
-                }}
-              />
-            )}
-          />
+          {products && products.length === 0 ? (
+            <Text style={TEXT}>You dont have any listings...</Text>
+          ) : (
+            <FlatList
+              contentContainerStyle={FLAT_LIST}
+              data={products}
+              keyExtractor={(item) => String(item.id)}
+              renderItem={({ item }) => (
+                <ProductListItem
+                  {...item}
+                  onPress={() => {
+                    setModalVisible(true)
+                    setModalData(item)
+                  }}
+                />
+              )}
+            />
+          )}
         </Screen>
       )}
     </View>

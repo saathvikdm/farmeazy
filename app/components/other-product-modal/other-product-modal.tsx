@@ -15,6 +15,7 @@ import { color, spacing, typography } from "../../theme"
 import { Text } from "../text/text"
 import { Button } from "../button/button"
 import { AntDesign, Entypo, Ionicons } from "@expo/vector-icons"
+import { Header } from "../header/header"
 
 const CENTERED_VIEW: ViewStyle = {
   flex: 1,
@@ -39,6 +40,25 @@ const MODAL_VIEW: ViewStyle = {
   elevation: 2,
   width: "90%",
   height: "100%",
+}
+const HEADER: TextStyle = {
+  paddingHorizontal: spacing[4],
+  paddingTop: spacing[3],
+  paddingBottom: spacing[5] - 1,
+  marginTop: spacing[2],
+}
+
+const BOLD: TextStyle = { fontWeight: "bold" }
+
+const BLACK_TEXT: TextStyle = { color: color.palette.black }
+
+const HEADER_TITLE: TextStyle = {
+  ...BOLD,
+  ...BLACK_TEXT,
+  fontSize: 12,
+  lineHeight: 15,
+  textAlign: "center",
+  letterSpacing: 1.5,
 }
 
 const TEXT: TextStyle = {
@@ -71,8 +91,6 @@ const DETAILS_CONTAINER: ViewStyle = {
   padding: spacing[4],
   flex: 1,
   backgroundColor: color.palette.primaryGreenT,
-  borderTopRightRadius: 20,
-  borderTopLeftRadius: 20,
 }
 
 const MODAL_HEADER: ViewStyle = {
@@ -142,11 +160,13 @@ export const OtherProductModal = ({ modalVisible = false, setModalVisible, modal
       {modalData && (
         <View style={CENTERED_VIEW}>
           <View style={MODAL_VIEW}>
-            <View style={MODAL_HEADER}>
-              <Button preset="link" onPress={() => setModalVisible(false)}>
-                <Ionicons name="arrow-back" size={30} color="black" />
-              </Button>
-            </View>
+            <Header
+              headerText="Product Details"
+              leftIcon="back"
+              onLeftPress={() => setModalVisible(false)}
+              style={HEADER}
+              titleStyle={HEADER_TITLE}
+            />
             <Image source={{ uri: imgUrl }} style={IMAGE} />
             <View style={DETAILS_CONTAINER}>
               <Text style={[TEXT, PRODUCT_NAME]}>{modalData.name}</Text>

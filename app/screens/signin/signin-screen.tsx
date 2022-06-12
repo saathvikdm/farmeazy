@@ -98,7 +98,7 @@ export const SigninScreen: FC<StackScreenProps<NavigatorParamList, "signin">> = 
         console.log("Successfully logged in!")
         let token = null
         token = await AsyncStorage.getItem("token")
-        if (token) navigation.navigate("farmerApp")
+        if (token) navigation.navigate("farmerApp", { user: res.data.user })
       } catch (err) {
         console.log(err)
         alert("Email or Password is wrong.")

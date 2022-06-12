@@ -68,46 +68,9 @@ export const Profile = ({ user }) => {
   // console.log(user)
   const imgUrl = connectionUrl + user.user_image.split("8080")[1]
 
-  const [image, setImage] = React.useState(null)
-
-  const pickImage = async () => {
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    })
-
-    setImage(result)
-    if (!result.cancelled) {
-      await updateDisplayPicture(result.uri)
-    }
-  }
-
-  const updateDisplayPicture = async (imageUri) => {
-    const userID = await AsyncStorage.getItem("userID")
-    const token = await AsyncStorage.getItem("token")
-    const config = {
-      headers: {
-        Authorization: token,
-        "Content-Type": "multipart/form-data",
-      },
-    }
-    try {
-      const formData = new FormData()
-      formData.append("user_image", { uri: imageUri, type: "image/jpg", name: "userImage" })
-      const res = await axios.put(`users/${userID}`, formData, config)
-      if (res.status === 200) {
-        console.log("Successfully updated!")
-      }
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
   return (
     <View style={PROFILE_CONTAINER}>
-      <View onTouchStart={pickImage}>
+      <View>
         {user.user_image === "" || !user.user_image ? (
           <View style={PROFILE_EMPTY_IMAGE}>
             <Text style={PROFILE_EMPTY_IMAGE_TEXT}>{user.firstname.charAt(0)}</Text>

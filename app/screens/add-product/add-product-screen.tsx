@@ -58,7 +58,8 @@ const UPLOAD_BUTTON: ViewStyle = {
   paddingVertical: spacing[4],
   paddingHorizontal: spacing[4],
   backgroundColor: color.palette.white,
-  marginVertical: 10,
+  borderColor: color.palette.blackT,
+  borderWidth: 0.8,
 }
 
 const BUTTON_TEXT: TextStyle = {
