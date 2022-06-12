@@ -90,6 +90,10 @@ export const Profile = ({ user }) => {
         <Text style={PROFILE_TEXT}>
           <Entypo name="location-pin" size={16} color="black" /> {user.city}
         </Text>
+        <Text style={PROFILE_TEXT}>
+          <AntDesign name="unlock" size={16} color="black" /> {` `}
+          A/c Type: {user.UserType.name}
+        </Text>
       </View>
     </View>
   )

@@ -26,6 +26,8 @@ import {
   ProfilePasswordEditScreen,
   ProfileSupportScreen,
   ProfileDisplayUpdateScreen,
+  OrdersViewScreen,
+  ProductEditScreen,
 } from "../screens"
 import { navigationRef, useBackButtonHandler } from "./navigation-utilities"
 
@@ -55,10 +57,12 @@ export type NavigatorParamList = {
   buyRent: undefined
   profile: undefined
   addProduct: undefined
+  ordersView: undefined
   profileEdit: undefined
   profilePasswordEdit: undefined
   profileSupport: undefined
   profileDisplayUpdate: undefined
+  productEdit: undefined
   // 🔥 Your screens go here
 }
 
@@ -81,7 +85,9 @@ const AppStack = () => {
       <Stack.Screen name="market" component={MarketScreen} />
       <Stack.Screen name="listing" component={ListingScreen} />
       <Stack.Screen name="addProduct" component={AddProductScreen} />
+      <Stack.Screen name="productEdit" component={ProductEditScreen} />
       <Stack.Screen name="buyRent" component={BuyRentScreen} />
+      <Stack.Screen name="ordersView" component={OrdersViewScreen} />
       <Stack.Screen name="profile" component={ProfileScreen} />
       <Stack.Screen name="profileEdit" component={ProfileEditScreen} />
       <Stack.Screen name="profileSupport" component={ProfileSupportScreen} />

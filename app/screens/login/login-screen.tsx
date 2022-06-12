@@ -73,6 +73,7 @@ const BUTTON_OUTLINE: ViewStyle = {
 
 const BUTTON_TEXT: TextStyle = {
   ...TEXT,
+  fontWeight: "bold",
   fontSize: 16,
 }
 

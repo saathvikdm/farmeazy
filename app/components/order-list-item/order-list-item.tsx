@@ -4,28 +4,9 @@ import { observer } from "mobx-react-lite"
 import { color, spacing, typography } from "../../theme"
 import { Text } from "../text/text"
 
-import { AntDesign, Entypo } from "@expo/vector-icons"
+import connectionUrl from "../../connection.js"
 
-export interface ListItemProps {
-  /**
-   * An optional style override useful for padding & margin.
-   */
-  style?: StyleProp<ViewStyle>
-
-  name?: string
-  image?: string
-  status?: string
-
-  minq?: string
-  seller?: string
-  price?: string
-
-  lister?: string
-  type?: string
-  location?: string
-
-  onPress?: any
-}
+import { AntDesign, Entypo, FontAwesome } from "@expo/vector-icons"
 
 const LIST_CONTAINER: ViewStyle = {
   alignItems: "center",
@@ -34,6 +15,11 @@ const LIST_CONTAINER: ViewStyle = {
   backgroundColor: color.palette.white,
   marginVertical: 2,
 }
+
+const TEXT_WHITE: TextStyle = {
+  color: color.palette.white,
+}
+
 const IMAGE: ImageStyle = {
   borderRadius: 35,
   height: 65,
@@ -53,7 +39,7 @@ const LIST_ITEM: ViewStyle = {
 
 const LIST_ITEM_DETAILS: ViewStyle = {
   flex: 0.7,
-  marginLeft: 10,
+  // marginLeft: 10,
 }
 
 const LIST_SELLER: ViewStyle = {
@@ -69,7 +55,12 @@ const LIST_TEXT_SELLER: TextStyle = {
 }
 
 const LIST_ITEM_NAME: TextStyle = {
-  fontSize: 18,
+  fontSize: 14,
+  fontWeight: "bold",
+}
+
+const LIST_ITEM_ID: TextStyle = {
+  fontSize: 28,
   fontWeight: "bold",
 }
 
@@ -79,11 +70,26 @@ const LIST_MIN_QTY: TextStyle = {
 }
 
 const LIST_PRICE: TextStyle = {
-  fontSize: 14,
-  fontWeight: "bold",
-  textAlign: "center",
+  ...TEXT_WHITE,
+  fontSize: 10,
+  fontWeight: "200",
   // color: color.palette.deepPurple,
   marginLeft: 0,
+  textAlign: "center",
+}
+
+const LIST_PRICE_TOTAL: TextStyle = {
+  fontSize: 16,
+  fontWeight: "bold",
+  // color: color.palette.deepPurple,
+  marginLeft: 0,
+  textAlign: "center",
+}
+
+const LIST_MUTED: TextStyle = {
+  ...TEXT_WHITE,
+  marginLeft: 0,
+  fontSize: 8,
 }
 
 const LIST_PRICE_CONTAINER: ViewStyle = {
@@ -103,47 +109,46 @@ const LIST_SUB_TEXT: TextStyle = {
   borderRadius: 10,
   marginVertical: 5,
   alignSelf: "flex-start",
+  ...TEXT_WHITE,
 }
 
-export const ListItem = (props: ListItemProps) => {
+const DELETE_BUTTON: ViewStyle = {
+  marginHorizontal: spacing[4],
+}
+
+export const OrderListItem = (props) => {
   return (
-    <Pressable onPress={props.onPress}>
+    <Pressable onPress={() => console.log("pressed item")}>
       <View style={LIST_CONTAINER}>
-        <Image source={{ uri: props.image }} style={IMAGE} />
+        <Pressable onPress={() => console.log("pressed thrash")}>
+          <View style={DELETE_BUTTON}>
+            <FontAwesome name="trash-o" size={32} color="black" />
+          </View>
+        </Pressable>
         <View style={LIST_ITEM}>
           <View style={LIST_ITEM_DETAILS}>
-            <Text style={[LIST_TEXT, LIST_ITEM_NAME]}>{props.name}</Text>
-            <View style={LIST_SELLER}>
-              <AntDesign name="user" size={12} color="black" />
-              <Text style={[LIST_TEXT, LIST_TEXT_SELLER]}>{props.seller || props.lister}</Text>
-              {props.lister && (
-                <View style={LIST_SELLER}>
-                  <Entypo name="location-pin" size={12} color="black" />
-                  <Text style={[LIST_TEXT, LIST_TEXT_SELLER]}>{props.location}</Text>
-                </View>
-              )}
-            </View>
+            <Text style={[LIST_TEXT, LIST_SUB_TEXT]}>
+              Order Quantity: <Text style={[LIST_MIN_QTY, TEXT_WHITE]}>{props.qty}</Text> KG
+            </Text>
+            <Text style={LIST_TEXT}>
+              Seller:{" "}
+              <Text style={[LIST_TEXT, LIST_ITEM_NAME]}>
+                {props.User.firstname} {props.User.lastname}
+              </Text>
+            </Text>
+            <Text style={LIST_TEXT}>
+              Buyer:{" "}
+              <Text style={[LIST_TEXT, LIST_ITEM_NAME]}>
+                {props.Product.User.sellerfname} {props.Product.User.sellerlname}
+              </Text>
+            </Text>
           </View>
           <View style={LIST_PRICE_CONTAINER}>
-            {!props.type ? (
-              <Text style={[LIST_TEXT, LIST_PRICE]}>₹{props.price}/KG</Text>
-            ) : (
-              <Text style={[LIST_TEXT, LIST_PRICE]}>
-                ₹{props.price}
-                {props.type.includes("Rent") ? <>/Hr</> : <>/KG</>}
-              </Text>
-            )}
-            <Text style={[LIST_TEXT, LIST_SUB_TEXT]}>
-              {props.minq ? (
-                <>
-                  MOQ: <Text style={LIST_MIN_QTY}>{props.minq}</Text> KG
-                </>
-              ) : (
-                <>
-                  <Text style={LIST_MIN_QTY}>{props.type}</Text>
-                </>
-              )}
+            <Text style={[LIST_TEXT, LIST_PRICE, LIST_PRICE_TOTAL]}>
+              ₹{props.price * props.qty}
             </Text>
+            <Text style={[LIST_TEXT, LIST_MUTED]}>----</Text>
+            <Text style={[LIST_TEXT, LIST_PRICE]}>₹{props.price}/KG</Text>
           </View>
         </View>
       </View>

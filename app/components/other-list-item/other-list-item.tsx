@@ -25,6 +25,11 @@ const LIST_TEXT: TextStyle = {
   color: color.palette.black,
 }
 
+const LIST_TEXT_WHITE: TextStyle = {
+  marginLeft: 10,
+  color: color.palette.white,
+}
+
 const LIST_ITEM: ViewStyle = {
   flex: 1,
   flexDirection: "row",
@@ -49,13 +54,18 @@ const LIST_TEXT_SELLER: TextStyle = {
   fontSize: 10,
 }
 
+const LIST_MUTED: TextStyle = {
+  marginLeft: 0,
+  fontSize: 8,
+}
+
 const LIST_ITEM_NAME: TextStyle = {
-  fontSize: 18,
+  fontSize: 16,
   fontWeight: "bold",
 }
 
 const LIST_MIN_QTY: TextStyle = {
-  color: color.palette.black,
+  color: color.palette.white,
   fontWeight: "bold",
 }
 
@@ -77,17 +87,19 @@ const LIST_PRICE_CONTAINER: ViewStyle = {
 }
 
 const LIST_SUB_TEXT: TextStyle = {
-  backgroundColor: color.palette.primaryGreenT,
-  paddingHorizontal: 5,
-  paddingVertical: 2,
-  fontSize: 10,
-  borderRadius: 10,
-  marginVertical: 5,
-  alignSelf: "flex-start",
+  marginLeft: 0,
+  textAlign: "center",
+  fontSize: 8,
 }
 
 const FLEX_ROW: ViewStyle = {
   flexDirection: "row",
+}
+
+const LIST_RENT: TextStyle = {
+  color: color.palette.primaryGreen,
+  fontWeight: "bold",
+  fontSize: 14,
 }
 
 export const OtherListItem = (props) => {
@@ -99,18 +111,7 @@ export const OtherListItem = (props) => {
         <Image source={{ uri: imgUrl }} style={IMAGE} />
         <View style={LIST_ITEM}>
           <View style={LIST_ITEM_DETAILS}>
-            <View style={FLEX_ROW}>
-              {props.type === "Rent" && (
-                <Text style={[LIST_TEXT, LIST_SUB_TEXT, LIST_MIN_QTY]}>Rent</Text>
-              )}
-              <Text style={[LIST_TEXT, LIST_SUB_TEXT]}>
-                Min:{" "}
-                <Text style={LIST_MIN_QTY}>
-                  {props.type === "Rent" ? `${props.min_qty}` : `${props.min_qty}`}
-                </Text>
-                {props.type === "Rent" ? `Hr` : `KG`}
-              </Text>
-            </View>
+            {props.type === "Rent" && <Text style={[LIST_TEXT, LIST_RENT]}>Rent</Text>}
             <Text style={[LIST_TEXT, LIST_ITEM_NAME]}>{props.name}</Text>
             <View style={LIST_SELLER}>
               <AntDesign name="user" size={12} color="black" />
@@ -124,9 +125,16 @@ export const OtherListItem = (props) => {
             </View>
           </View>
           <View style={LIST_PRICE_CONTAINER}>
-            <Text style={[LIST_TEXT, LIST_PRICE]}>
+            <Text style={[LIST_TEXT_WHITE, LIST_PRICE]}>
               ₹{props.price}
-              {props.type === "Rent" ? "/Hr" : "/KG"}
+              <Text style={[LIST_TEXT_WHITE, LIST_MUTED]}>
+                {props.type !== "Rent" ? " KG" : " Hr(s)"}
+              </Text>
+            </Text>
+            <Text style={[LIST_TEXT_WHITE, LIST_MUTED]}>----</Text>
+            <Text style={[LIST_TEXT_WHITE, LIST_SUB_TEXT]}>
+              MOQ: <Text style={[LIST_TEXT_WHITE, LIST_MIN_QTY]}>{props.min_qty}</Text>
+              {props.type !== "Rent" ? " KG" : " Hr(s)"}
             </Text>
           </View>
         </View>

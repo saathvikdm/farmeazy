@@ -4,7 +4,7 @@ import { HeaderProps } from "./header.props"
 import { Button } from "../button/button"
 import { Text } from "../text/text"
 import { Icon } from "../icon/icon"
-import { spacing } from "../../theme"
+import { color, spacing } from "../../theme"
 import { translate } from "../../i18n/"
 
 // static styles
@@ -34,6 +34,7 @@ export function Header(props: HeaderProps) {
     headerTx,
     style,
     titleStyle,
+    iconStyle = null,
   } = props
   const header = headerText || (headerTx && translate(headerTx)) || ""
 
@@ -41,7 +42,7 @@ export function Header(props: HeaderProps) {
     <View style={[ROOT, style]}>
       {leftIcon ? (
         <Button preset="link" onPress={onLeftPress}>
-          <Icon icon={leftIcon} />
+          <Icon icon={leftIcon} style={iconStyle && iconStyle} />
         </Button>
       ) : (
         <View style={LEFT} />
@@ -51,7 +52,7 @@ export function Header(props: HeaderProps) {
       </View>
       {rightIcon ? (
         <Button preset="link" onPress={onRightPress}>
-          <Icon icon={rightIcon} />
+          <Icon icon={rightIcon} style={{ backgroundColor: color.palette.white }} />
         </Button>
       ) : (
         <View style={RIGHT} />

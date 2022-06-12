@@ -1,6 +1,7 @@
 import { StyleProp, TextStyle, ViewStyle } from "react-native"
 import { IconTypes } from "../icon/icons"
 import { TxKeyPath } from "../../i18n"
+import { IconProps } from "../icon/icon.props"
 
 export interface HeaderProps {
   /**
@@ -42,4 +43,6 @@ export interface HeaderProps {
    * Title style overrides.
    */
   titleStyle?: StyleProp<TextStyle>
+
+  iconStyle?: any
 }

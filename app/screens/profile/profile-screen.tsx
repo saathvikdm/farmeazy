@@ -115,29 +115,33 @@ export const ProfileScreen = ({ navigation }) => {
       {/* {user && <Profile user={user} />} */}
       <View>
         <Text style={PROFILE_MENU_OPTION} onPress={() => navigation.navigate("profileEdit")}>
-          <AntDesign name="user" size={16} color="black" /> Edit Profile Details
+          <AntDesign name="user" size={16} color="black" />
+          &nbsp;Edit Profile Details
         </Text>
         <Text
           style={PROFILE_MENU_OPTION}
           onPress={() => navigation.navigate("profileDisplayUpdate", { user: user })}
         >
-          <AntDesign name="picture" size={16} color="black" /> Edit Profile Display Picture
+          <AntDesign name="picture" size={16} color="black" />
+          &nbsp;Edit Profile Display Picture
         </Text>
         <Text
           style={PROFILE_MENU_OPTION}
           onPress={() => navigation.navigate("profilePasswordEdit")}
         >
-          <MaterialCommunityIcons name="form-textbox-password" size={16} color="black" /> Change
-          Password
+          <MaterialCommunityIcons name="form-textbox-password" size={16} color="black" />
+          &nbsp;Change Password
         </Text>
         <Text style={PROFILE_MENU_OPTION} onPress={() => navigation.navigate("profileSupport")}>
-          <MaterialIcons name="support-agent" size={16} color="black" /> Contact Support
+          <MaterialIcons name="support-agent" size={16} color="black" />
+          &nbsp;Contact Support
         </Text>
         {/* <Text style={PROFILE_MENU_OPTION}>
           <AntDesign name="codesquareo" size={16} color="black" /> Credits
         </Text> */}
         <Text style={PROFILE_MENU_OPTION} onPress={handleLogout}>
-          <AntDesign name="logout" size={16} color="black" /> Logout
+          <AntDesign name="logout" size={16} color="black" />
+          &nbsp;Logout
         </Text>
       </View>
       <Text style={PROFILE_FOOTER}>FarmEazy Ver 0.0.1</Text>

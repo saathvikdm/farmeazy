@@ -17,16 +17,21 @@ import { Button } from "../button/button"
 import { AntDesign, Entypo, Ionicons } from "@expo/vector-icons"
 import { Header } from "../header/header"
 import { navigationRef } from "../../navigators"
+import { TextInput } from "react-native-gesture-handler"
+import { TextField } from "../text-field/text-field"
+import axios from "axios"
+import AsyncStorage from "@react-native-async-storage/async-storage"
+import { useNavigation } from "@react-navigation/native"
 
 const CENTERED_VIEW: ViewStyle = {
   flex: 1,
   justifyContent: "space-between",
   alignItems: "center",
-  marginBottom: 30,
+  // marginBottom: 30,
 }
 
 const MODAL_VIEW: ViewStyle = {
-  margin: 20,
+  // margin: 20,
   backgroundColor: color.palette.white,
   borderRadius: 5,
   // alignItems: "center",
@@ -39,12 +44,12 @@ const MODAL_VIEW: ViewStyle = {
   shadowOpacity: 0.25,
   shadowRadius: 10,
   elevation: 2,
-  width: "90%",
+  width: "100%",
   height: "100%",
 }
 
 const TEXT: TextStyle = {
-  fontSize: 20,
+  fontSize: 14,
   color: color.palette.black,
   textAlign: "left",
 }
@@ -53,26 +58,32 @@ const IMAGE: ImageStyle = {
   // borderRadius: 35,
   height: "30%",
   width: "100%",
+  borderBottomLeftRadius: 30,
+  borderBottomRightRadius: 30,
+  backgroundColor: color.palette.lighterGrey,
 }
 
-const BUTTON_OUTLINE: ViewStyle = {
+const BUTTON: ViewStyle = {
   paddingVertical: spacing[4],
   paddingHorizontal: spacing[4],
-  backgroundColor: color.palette.white,
-  borderColor: color.palette.blackT,
+  marginHorizontal: spacing[4],
+  marginVertical: spacing[2],
+  backgroundColor: color.palette.primaryGreen,
   // borderWidth: 0.8,
 }
 
 const BUTTON_TEXT: TextStyle = {
-  ...TEXT,
+  textAlign: "left",
+  color: color.palette.white,
   fontSize: 16,
+  fontWeight: "bold",
 }
 
 const DETAILS_CONTAINER: ViewStyle = {
   // marginTop: spacing[4],
   padding: spacing[4],
   flex: 1,
-  backgroundColor: color.palette.primaryGreenT,
+  backgroundColor: color.palette.white,
 }
 
 const BOLD: TextStyle = { fontWeight: "bold" }
@@ -81,18 +92,22 @@ const BLACK_TEXT: TextStyle = { color: color.palette.black }
 
 const HEADER: TextStyle = {
   paddingHorizontal: spacing[4],
-  paddingTop: spacing[3],
+  paddingTop: spacing[5],
   paddingBottom: spacing[5] - 1,
-  marginTop: spacing[2],
+  // marginTop: spacing[2],
+  backgroundColor: color.palette.primaryGreenT,
 }
 const HEADER_TITLE: TextStyle = {
   ...BOLD,
-  ...BLACK_TEXT,
+  color: color.palette.white,
   fontSize: 12,
   lineHeight: 15,
   textAlign: "center",
   letterSpacing: 1.5,
+  marginLeft: spacing[4],
 }
+
+const HEADER_ICON: ViewStyle = { tintColor: color.palette.white }
 
 const MODAL_HEADER: ViewStyle = {
   // marginBottom: spacing[1],
@@ -107,10 +122,13 @@ const PRODUCT_PRICE: ViewStyle = {
   borderBottomColor: color.palette.primaryGreen,
   borderBottomWidth: 2,
   paddingBottom: spacing[4],
+  flexDirection: "row",
+  justifyContent: "space-between",
+  alignItems: "center",
 }
 
 const PRODUCT_NAME: TextStyle = {
-  fontSize: 24,
+  fontSize: 21,
   fontWeight: "bold",
 }
 
@@ -125,8 +143,13 @@ const TEXT_BOLD: TextStyle = {
   fontWeight: "bold",
 }
 
+const COUNTER_TEXT: TextStyle = {
+  ...TEXT_BOLD,
+  fontSize: 32,
+}
+
 const PRODUCT_MOQ: TextStyle = {
-  fontSize: 16,
+  fontSize: 12,
   fontWeight: "500",
   opacity: 0.6,
 }
@@ -135,7 +158,7 @@ const PRODUCT_SELLER: ViewStyle = {
   flexDirection: "row",
   // justifyContent: "center",
   alignItems: "center",
-  marginTop: spacing[2],
+  marginTop: spacing[1],
   paddingRight: spacing[2],
 }
 
@@ -147,8 +170,60 @@ const PRODUCT_DETAILS: ViewStyle = {
 }
 
 export const ProductModal = ({ modalVisible = false, setModalVisible, modalData = null }) => {
+  const navigation = useNavigation()
+
   let imgUrl
-  if (modalData) imgUrl = "http://192.168.29.110:8080/" + modalData.image.split("8080")[1]
+
+  const [qty, setqty] = React.useState(0)
+  const [userID, setUserID] = React.useState("")
+
+  if (modalData) {
+    imgUrl = "http://192.168.29.110:8080/" + modalData.image.split("8080")[1]
+  }
+
+  React.useEffect(() => {
+    if (modalData) setqty(modalData.min_qty)
+  }, [modalData])
+
+  React.useEffect(() => {
+    ;(async () => {
+      const userID = await AsyncStorage.getItem("userID")
+      setUserID(userID)
+    })()
+  }, [])
+
+  const handlePlaceOrder = async () => {
+    const userID = await AsyncStorage.getItem("userID")
+    const token = await AsyncStorage.getItem("token")
+
+    try {
+      const config = {
+        headers: {
+          Authorization: token,
+        },
+      }
+
+      const order = {
+        qty,
+        UserId: userID,
+        ProductId: modalData.id,
+        price: modalData.price,
+      }
+
+      const res = await axios.post(`order/create`, order, config)
+      if (res.status === 200) {
+        console.log("Order Added to Marketplace")
+        alert("Order Successfully Placed!")
+        setModalVisible(false)
+      } else {
+        console.log("Error")
+      }
+    } catch (err) {
+      console.log(err)
+      alert("Error Occured: Try again later!")
+    }
+  }
+
   return (
     <Modal
       animationType="slide"
@@ -161,17 +236,13 @@ export const ProductModal = ({ modalVisible = false, setModalVisible, modalData 
       {modalData && (
         <View style={CENTERED_VIEW}>
           <View style={MODAL_VIEW}>
-            {/* <View style={MODAL_HEADER}>
-              <Button preset="link" onPress={() => setModalVisible(false)}>
-                <Ionicons name="arrow-back" size={30} color="black" />
-              </Button>
-            </View> */}
             <Header
               headerText="Product Details"
               leftIcon="back"
               onLeftPress={() => setModalVisible(false)}
               style={HEADER}
               titleStyle={HEADER_TITLE}
+              iconStyle={HEADER_ICON}
             />
             <Image source={{ uri: imgUrl }} style={IMAGE} />
             <View style={DETAILS_CONTAINER}>
@@ -184,41 +255,66 @@ export const ProductModal = ({ modalVisible = false, setModalVisible, modalData 
               </Text>
               <View style={PRODUCT_PRICE}>
                 <Text style={[TEXT, PRODUCT_SUBHEADER]}>
-                  Price: <Text style={TEXT_BOLD}>₹{modalData.price}/KG</Text>
+                  <AntDesign
+                    onPress={() => setqty(qty - 1)}
+                    name="minussquare"
+                    size={32}
+                    color={color.palette.primaryGreenT}
+                  />
+                  <Text style={COUNTER_TEXT}> {qty} </Text>
+                  <AntDesign
+                    onPress={() => setqty(qty + 1)}
+                    name="plussquare"
+                    size={32}
+                    color={color.palette.primaryGreenT}
+                  />
                 </Text>
                 <Text style={[TEXT, PRODUCT_SUBHEADER]}>
-                  Min Purchase Price:{" "}
-                  <Text style={TEXT_BOLD}>
-                    ₹{parseInt(modalData.price) * parseInt(modalData.min_qty)} /-
-                  </Text>
+                  ₹<Text style={[TEXT_BOLD, { fontSize: 32 }]}>{modalData.price * qty}</Text>
                 </Text>
               </View>
               <View style={PRODUCT_DETAILS}>
-                <Text style={[PRODUCT_SUBHEADER, {}]}>Seller Details</Text>
+                <Text style={[TEXT, PRODUCT_MOQ]}>Product Description</Text>
                 <View style={PRODUCT_SELLER}>
-                  <AntDesign name="user" size={20} color="black" />
+                  <Text style={TEXT}>{modalData.desc}</Text>
+                </View>
+                <Text style={[TEXT, PRODUCT_MOQ, { marginTop: spacing[4] }]}>Seller Details</Text>
+                <View style={PRODUCT_SELLER}>
+                  <AntDesign name="user" size={14} color="black" />
                   <Text style={[TEXT_BOLD, { paddingLeft: spacing[2] }]}>
                     {modalData.User.firstname} {modalData.User.lastname}
                   </Text>
                 </View>
                 <View style={PRODUCT_SELLER}>
-                  <Entypo name="location-pin" size={20} color="black" />
+                  <Entypo name="location-pin" size={14} color="black" />
                   <Text style={[TEXT, { paddingLeft: spacing[2] }]}>{modalData.User.address}</Text>
                 </View>
                 <View style={PRODUCT_SELLER}>
-                  <AntDesign name="phone" size={20} color="black" />
+                  <AntDesign name="phone" size={14} color="black" />
                   <Text style={[TEXT, { paddingLeft: spacing[2] }]}>
                     +91 {modalData.User.phone}
                   </Text>
                 </View>
               </View>
             </View>
-            <Button
-              text="Contact Seller"
-              style={BUTTON_OUTLINE}
-              textStyle={[BUTTON_TEXT, { color: color.palette.black }]}
-              onPress={() => setModalVisible(false)}
-            />
+            {modalData.UserId.toString() === userID ? (
+              <Button
+                text="Update Product Details"
+                style={BUTTON}
+                textStyle={BUTTON_TEXT}
+                onPress={() => {
+                  setModalVisible(false)
+                  navigation.navigate("productEdit", { product: modalData })
+                }}
+              />
+            ) : (
+              <Button
+                text="Place Order"
+                style={BUTTON}
+                textStyle={BUTTON_TEXT}
+                onPress={() => handlePlaceOrder()}
+              />
+            )}
           </View>
         </View>
       )}

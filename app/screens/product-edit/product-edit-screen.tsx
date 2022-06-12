@@ -69,18 +69,21 @@ const BUTTON_TEXT: TextStyle = {
   fontSize: 16,
 }
 
-export const AddProductScreen = ({ navigation }) => {
-  const defaultValues = {
-    name: "",
-    type: "Farm",
-    desc: "",
-    price: undefined,
-    min_qty: undefined,
-    avl_qty: undefined,
-    UserId: undefined,
-  }
-  const [product, setProduct] = useState(defaultValues)
-  const [image, setImage] = useState(null)
+export const ProductEditScreen = ({ navigation, route }) => {
+  const { product: productProp } = route.params
+
+  const { id, price, name, min_qty, avl_qty, desc, image } = productProp
+
+  const [product, setProduct] = useState({
+    id,
+    price,
+    name,
+    min_qty,
+    avl_qty,
+    desc,
+    image,
+  })
+  const [imageselect, setimageselect] = useState(null)
 
   const goBack = () => navigation.goBack()
 
@@ -101,17 +104,15 @@ export const AddProductScreen = ({ navigation }) => {
       quality: 1,
     })
 
-    setImage(result)
+    setimageselect(result)
     if (!result.cancelled) {
-      setImage(result.uri)
+      setimageselect(result.uri)
     }
   }
 
-  const handleAddProduct = async () => {
+  const handleUpdateProduct = async () => {
     const userID = await AsyncStorage.getItem("userID")
     const token = await AsyncStorage.getItem("token")
-
-    setProduct({ ...product, UserId: userID })
 
     try {
       const config = {
@@ -125,10 +126,14 @@ export const AddProductScreen = ({ navigation }) => {
       for (const key in product) {
         formData.append(key, product[key])
       }
-      formData.append("image", { uri: image, type: "image/jpg", name: "productImage" })
-      const res = await axios.post(`product/create`, formData, config)
+
+      if (imageselect !== null) {
+        formData.append("image", { uri: imageselect, type: "image/jpg", name: "productImage" })
+      }
+
+      const res = await axios.put(`product/${id}`, formData, config)
       if (res.status === 200) {
-        console.log("Product Added to Marketplace")
+        console.log("Product Details Successfully updated!")
         navigation.goBack()
       } else {
         console.log("Error")
@@ -142,7 +147,7 @@ export const AddProductScreen = ({ navigation }) => {
   return (
     <Screen style={CONTAINER} preset="scroll">
       <Header
-        headerText="Add Product"
+        headerText="Update Product Details"
         leftIcon="back"
         onLeftPress={goBack}
         style={HEADER}
@@ -163,28 +168,28 @@ export const AddProductScreen = ({ navigation }) => {
             onChangeText={(text) => setProduct({ ...product, desc: text })}
           />
           <TextField
-            value={product.price}
+            value={product.price.toString()}
             label="Product Price"
             placeholder="Enter Product Price"
             onChangeText={(text) => setProduct({ ...product, price: text })}
             keyboardType="number-pad"
           />
           <TextField
-            value={product.min_qty}
+            value={product.min_qty.toString()}
             label="Min Purchase Quantity (in KG)"
             placeholder="Enter Min Purchase Quantity"
             onChangeText={(text) => setProduct({ ...product, min_qty: text })}
             keyboardType="number-pad"
           />
           <TextField
-            value={product.avl_qty}
+            value={product.avl_qty.toString()}
             label="Total Available Quantity (in KG)"
             placeholder="Enter Total Available Quantity"
             onChangeText={(text) => setProduct({ ...product, avl_qty: text })}
             keyboardType="number-pad"
           />
           <Button style={UPLOAD_BUTTON} onPress={pickImage}>
-            {image ? (
+            {imageselect ? (
               <Text style={TEXT_UPLOADED}>
                 Image Selected&nbsp;
                 <AntDesign name="checkcircleo" size={24} color="green" />
@@ -205,8 +210,8 @@ export const AddProductScreen = ({ navigation }) => {
         <Button
           style={BUTTON}
           textStyle={[BUTTON_TEXT]}
-          text="Add Product to Market"
-          onPress={handleAddProduct}
+          text="Update Product Details"
+          onPress={handleUpdateProduct}
         />
       </View>
     </Screen>
