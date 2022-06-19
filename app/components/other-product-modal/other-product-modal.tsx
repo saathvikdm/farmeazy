@@ -18,6 +18,7 @@ import { AntDesign, Entypo, FontAwesome, Ionicons } from "@expo/vector-icons"
 import { Header } from "../header/header"
 import axios from "axios"
 import AsyncStorage from "@react-native-async-storage/async-storage"
+import { useNavigation } from "@react-navigation/native"
 
 const CENTERED_VIEW: ViewStyle = {
   flex: 1,
@@ -165,7 +166,15 @@ const PRODUCT_DETAILS: ViewStyle = {
   alignItems: "flex-start",
 }
 
+const PROFILE_IMAGE: ImageStyle = {
+  borderRadius: 50,
+  height: 18,
+  width: 18,
+}
+
 export const OtherProductModal = ({ modalVisible = false, setModalVisible, modalData = null }) => {
+  const navigation = useNavigation()
+
   let imgUrl
 
   const [userID, setUserID] = React.useState("")
@@ -274,7 +283,7 @@ export const OtherProductModal = ({ modalVisible = false, setModalVisible, modal
               titleStyle={HEADER_TITLE}
               iconStyle={HEADER_ICON}
             />
-            <Image source={{ uri: imgUrl }} style={IMAGE} />
+            <Image source={{ uri: modalData.image }} style={IMAGE} />
             <View style={DETAILS_CONTAINER}>
               <Text style={[TEXT, PRODUCT_NAME]}>{modalData.name}</Text>
               <Text style={[TEXT, PRODUCT_MOQ]}>
@@ -289,10 +298,16 @@ export const OtherProductModal = ({ modalVisible = false, setModalVisible, modal
                 <View style={PRODUCT_PRICE}>
                   <Text style={[TEXT, PRODUCT_SUBHEADER]}>
                     <AntDesign
-                      onPress={() => setqty(qty - 1)}
+                      onPress={() => {
+                        qty > modalData.min_qty && setqty(qty - 1)
+                      }}
                       name="minussquare"
                       size={32}
-                      color={color.palette.primaryGreenT}
+                      color={
+                        qty > modalData.min_qty
+                          ? color.palette.primaryGreenT
+                          : color.palette.primaryGreenDisabled
+                      }
                     />
                     <Text style={COUNTER_TEXT}> {qty} </Text>
                     <AntDesign
@@ -324,29 +339,51 @@ export const OtherProductModal = ({ modalVisible = false, setModalVisible, modal
                 </View>
                 <Text style={[TEXT, PRODUCT_MOQ, { marginTop: spacing[4] }]}>Seller Details</Text>
                 <View style={PRODUCT_SELLER}>
-                  <AntDesign name="user" size={14} color="black" />
+                  {/* <AntDesign name="user" size={14} color="black" /> */}
+                  {modalData.User.user_image === "" || !modalData.User.user_image ? (
+                    <AntDesign name="user" size={14} color="black" />
+                  ) : (
+                    <Image source={{ uri: modalData.User.user_image }} style={PROFILE_IMAGE} />
+                  )}
                   <Text style={[TEXT_BOLD, { paddingLeft: spacing[2] }]}>
                     {modalData.User.firstname} {modalData.User.lastname}
                   </Text>
                 </View>
                 <View style={PRODUCT_SELLER}>
-                  <Entypo name="location-pin" size={14} color="black" />
+                  <Entypo name="location-pin" size={20} color="black" />
                   <Text style={[TEXT, { paddingLeft: spacing[2] }]}>{modalData.User.address}</Text>
                 </View>
                 <View style={PRODUCT_SELLER}>
-                  <AntDesign name="phone" size={14} color="black" />
+                  <AntDesign
+                    name="phone"
+                    size={14}
+                    color="black"
+                    style={{ paddingLeft: spacing[1] }}
+                  />
                   <Text style={[TEXT, { paddingLeft: spacing[2] }]}>
                     +91 {modalData.User.phone}
                   </Text>
                 </View>
               </View>
             </View>
-            <Button
-              text="Place Order"
-              style={BUTTON}
-              textStyle={BUTTON_TEXT}
-              onPress={() => handlePlaceOrder()}
-            />
+            {modalData.UserId.toString() === userID ? (
+              <Button
+                text="Update Product Details"
+                style={BUTTON}
+                textStyle={BUTTON_TEXT}
+                onPress={() => {
+                  setModalVisible(false)
+                  navigation.navigate("productEdit", { product: modalData })
+                }}
+              />
+            ) : (
+              <Button
+                text="Place Order"
+                style={BUTTON}
+                textStyle={BUTTON_TEXT}
+                onPress={() => handlePlaceOrder()}
+              />
+            )}
           </View>
         </View>
       )}

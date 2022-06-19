@@ -14,6 +14,7 @@ import { FlatList } from "react-native-gesture-handler"
 import axios from "axios"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import connectionUrl from "../../connection.js"
+import { async } from "validate.js"
 
 const FULL: ViewStyle = {
   flex: 1,
@@ -51,9 +52,18 @@ export const ListingScreen = ({ navigation }) => {
     return willFocusSubscription
   }, [userID])
 
-  const fetchData = () => {
+  const fetchData = async () => {
+    const userID = await AsyncStorage.getItem("userID")
+    const token = await AsyncStorage.getItem("token")
+    const config = {
+      headers: {
+        Authorization: token,
+        "Content-Type": "multipart/form-data",
+      },
+    }
+
     axios
-      .get(connectionUrl + "api/product")
+      .get(connectionUrl + "api/product", config)
       .then((res) => {
         const filteredResult = res.data.product.filter((i) => i.UserId.toString() === userID)
         setProducts(filteredResult)

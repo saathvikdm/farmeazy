@@ -180,7 +180,7 @@ export const ProfileDisplayUpdateScreen = ({ navigation, route }) => {
             <Text style={PROFILE_EMPTY_IMAGE_TEXT}>{user.firstname.charAt(0)}</Text>
           </View>
         ) : (
-          <Image source={{ uri: imgUrl }} style={IMAGE} />
+          <Image source={{ uri: user.user_image }} style={IMAGE} />
         )}
         <Button style={UPLOAD_BUTTON} onPress={pickImage}>
           {image ? (

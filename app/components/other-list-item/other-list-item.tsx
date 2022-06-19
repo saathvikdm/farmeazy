@@ -108,7 +108,7 @@ export const OtherListItem = (props) => {
   return (
     <Pressable onPress={props.onPress}>
       <View style={LIST_CONTAINER}>
-        <Image source={{ uri: imgUrl }} style={IMAGE} />
+        <Image source={{ uri: props.image }} style={IMAGE} />
         <View style={LIST_ITEM}>
           <View style={LIST_ITEM_DETAILS}>
             {props.type === "Rent" && <Text style={[LIST_TEXT, LIST_RENT]}>Rent</Text>}

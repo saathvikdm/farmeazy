@@ -11,4 +11,5 @@ export const palette = {
   deepPurple: "#5D2555",
   primaryGreen: "#38A3A5",
   primaryGreenT: "#38A3A5",
+  primaryGreenDisabled: "#71aeaf",
 }

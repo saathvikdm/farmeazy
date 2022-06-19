@@ -76,7 +76,7 @@ export const Profile = ({ user }) => {
             <Text style={PROFILE_EMPTY_IMAGE_TEXT}>{user.firstname.charAt(0)}</Text>
           </View>
         ) : (
-          <Image source={{ uri: imgUrl }} style={IMAGE} />
+          <Image source={{ uri: user.user_image }} style={IMAGE} />
         )}
       </View>
       <View style={PROFILE_ITEM}>

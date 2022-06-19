@@ -106,7 +106,14 @@ export const ProfileScreen = ({ navigation }) => {
   const handleLogout = async () => {
     await AsyncStorage.removeItem("token")
     await AsyncStorage.removeItem("userID")
-    navigation.navigate("signin")
+    navigation.reset({
+      index: 0,
+      routes: [
+        {
+          name: "welcome",
+        },
+      ],
+    })
   }
 
   return (

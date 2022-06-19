@@ -21,6 +21,7 @@ import { FlatList } from "react-native-gesture-handler"
 import axios from "axios"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import connectionUrl from "../../connection.js"
+import { Picker } from "@react-native-picker/picker"
 
 const FULL: ViewStyle = {
   flex: 1,
@@ -43,6 +44,9 @@ export const OrdersViewScreen = ({ navigation }) => {
   const [userID, setUserID] = React.useState("")
   const [loading, setloading] = React.useState(true)
 
+  const [filter, setFilter] = useState()
+  const [filteredProducts, setFilteredProducts] = useState()
+
   React.useEffect(() => {
     ;(async () => {
       const userID = await AsyncStorage.getItem("userID")
@@ -58,18 +62,37 @@ export const OrdersViewScreen = ({ navigation }) => {
     return willFocusSubscription
   }, [userID])
 
-  const fetchData = () => {
+  const fetchData = async () => {
+    const userID = await AsyncStorage.getItem("userID")
+    const token = await AsyncStorage.getItem("token")
+    const config = {
+      headers: {
+        Authorization: token,
+      },
+    }
     axios
-      .get("order")
+      .get("order", config)
       .then((res) => {
         const filteredResult = res.data.order.filter(
           (i) => i.UserId.toString() === userID || i.Product.UserId.toString() === userID,
         )
         setorders(filteredResult)
+        setFilteredProducts(filteredResult)
         setloading(false)
       })
       .catch((err) => console.log(err))
   }
+
+  useEffect(() => {
+    if (filter === 1) {
+      fetchData()
+    }
+    if (filteredProducts && filteredProducts.length > 0) {
+      const prodArr = Array.from(filteredProducts)
+      const filteredProductsArr = prodArr.filter((item) => item.fullfilled === filter)
+      setorders(filteredProductsArr)
+    }
+  }, [filter])
 
   return (
     <View testID="DemoListScreen" style={FULL}>
@@ -84,24 +107,37 @@ export const OrdersViewScreen = ({ navigation }) => {
               modalData={modalData}
             />
           )} */}
+          <View style={{ backgroundColor: color.palette.white }}>
+            <Picker
+              selectedValue={filter}
+              onValueChange={(itemValue, itemIndex) => setFilter(itemValue)}
+            >
+              <Picker.Item label="All Orders" value={1} />
+              <Picker.Item label="In-Progress" value={false} />
+              <Picker.Item label="Fullfilled" value={true} />
+            </Picker>
+          </View>
           {orders && orders.length === 0 ? (
             <Text style={TEXT}>You dont have any orders...</Text>
           ) : (
             // <Text style={TEXT}>You have listings...</Text>
-            <FlatList
-              contentContainerStyle={FLAT_LIST}
-              data={orders}
-              keyExtractor={(item) => String(item.id)}
-              renderItem={({ item }) => (
-                <OrderListItem
-                  {...item}
-                  onPress={() => {
-                    setModalVisible(true)
-                    setModalData(item)
-                  }}
-                />
-              )}
-            />
+            <>
+              <FlatList
+                contentContainerStyle={FLAT_LIST}
+                data={orders}
+                keyExtractor={(item) => String(item.id)}
+                renderItem={({ item }) => (
+                  <OrderListItem
+                    {...item}
+                    onPress={() => {
+                      setModalVisible(true)
+                      setModalData(item)
+                    }}
+                    userID={userID}
+                  />
+                )}
+              />
+            </>
           )}
         </Screen>
       )}

@@ -10,6 +10,7 @@ import {
   OtherProductModal,
   Screen,
   Text,
+  TextField,
 } from "../../components"
 // import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "../../models"
@@ -21,6 +22,8 @@ import { FlatList } from "react-native-gesture-handler"
 import axios from "axios"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import connectionUrl from "../../connection.js"
+import { Entypo, FontAwesome } from "@expo/vector-icons"
+import { Picker } from "@react-native-picker/picker"
 
 const FULL: ViewStyle = {
   flex: 1,
@@ -29,6 +32,15 @@ const FULL: ViewStyle = {
 const FLAT_LIST: ViewStyle = {
   paddingHorizontal: spacing[0],
 }
+
+const SEARCH_INPUT: ViewStyle = {
+  backgroundColor: color.palette.white,
+  padding: spacing[2],
+  flexDirection: "row",
+  alignItems: "flex-end",
+  justifyContent: "space-between",
+}
+
 export const BuyRentScreen = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false)
   const [modalData, setModalData] = useState(null)
@@ -36,6 +48,10 @@ export const BuyRentScreen = ({ navigation }) => {
   const [userID, setUserID] = React.useState("")
   const [loading, setloading] = React.useState(true)
   const [user, setUser] = React.useState()
+
+  const [searchQuery, setSearchQuery] = useState("")
+  const [filter, setFilter] = useState()
+  const [filteredProducts, setFilteredProducts] = useState()
 
   React.useEffect(() => {
     ;(async () => {
@@ -58,6 +74,7 @@ export const BuyRentScreen = ({ navigation }) => {
       .then((res) => {
         const filteredResult = res.data.product.filter((i) => i.type !== "Farm")
         setProducts(filteredResult)
+        setFilteredProducts(filteredResult)
         setloading(false)
       })
       .catch((err) => console.log(err))
@@ -81,6 +98,31 @@ export const BuyRentScreen = ({ navigation }) => {
     })()
   }, [])
 
+  useEffect(() => {
+    if (searchQuery !== "" && searchQuery.length > 0) {
+      if (filteredProducts && filteredProducts.length > 0) {
+        const prodArr = Array.from(filteredProducts)
+        const filteredProductsArr = prodArr.filter((item) =>
+          item.name.toLowerCase().includes(searchQuery.toLowerCase()),
+        )
+        setProducts(filteredProductsArr)
+      }
+    } else {
+      fetchData()
+    }
+  }, [searchQuery])
+
+  useEffect(() => {
+    if (filter == 0 || filter == null) {
+      fetchData()
+    }
+    if (filteredProducts && filteredProducts.length > 0) {
+      const prodArr = Array.from(filteredProducts)
+      const filteredProductsArr = prodArr.filter((item) => item.type == filter)
+      setProducts(filteredProductsArr)
+    }
+  }, [filter])
+
   return (
     <View testID="DemoListScreen" style={FULL}>
       {loading ? (
@@ -94,6 +136,41 @@ export const BuyRentScreen = ({ navigation }) => {
               modalData={modalData}
             />
           )}
+          <View style={SEARCH_INPUT}>
+            <TextField
+              style={{ paddingVertical: spacing[0] }}
+              value={searchQuery}
+              onChangeText={(text) => setSearchQuery(text)}
+              label={`Search Product`}
+              placeholder={`Enter product search term`}
+            />
+            {searchQuery.length > 0 ? (
+              <Entypo
+                name="circle-with-cross"
+                style={{ marginBottom: spacing[2] }}
+                size={24}
+                onPress={() => setSearchQuery("")}
+                color={color.palette.lighterGrey}
+              />
+            ) : (
+              <FontAwesome
+                name="search"
+                style={{ marginBottom: spacing[2] }}
+                size={24}
+                color={color.palette.lighterGrey}
+              />
+            )}
+          </View>
+          <View style={{ backgroundColor: color.palette.white }}>
+            <Picker
+              selectedValue={filter}
+              onValueChange={(itemValue, itemIndex) => setFilter(itemValue.toString())}
+            >
+              <Picker.Item label="All Products" value={0} />
+              <Picker.Item label="Consumable" value="Consumable" />
+              <Picker.Item label="Rent" value="Rent" />
+            </Picker>
+          </View>
           <FlatList
             contentContainerStyle={FLAT_LIST}
             data={products}

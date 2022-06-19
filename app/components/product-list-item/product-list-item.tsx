@@ -92,18 +92,29 @@ const LIST_SUB_TEXT: TextStyle = {
   fontSize: 8,
 }
 
+const PROFILE_IMAGE: ImageStyle = {
+  borderRadius: 50,
+  height: 18,
+  width: 18,
+}
+
 export const ProductListItem = (props) => {
   const imgUrl = connectionUrl + props.image.split("8080")[1]
 
   return (
     <Pressable onPress={props.onPress}>
       <View style={LIST_CONTAINER}>
-        <Image source={{ uri: imgUrl }} style={IMAGE} />
+        <Image source={{ uri: props.image }} style={IMAGE} />
         <View style={LIST_ITEM}>
           <View style={LIST_ITEM_DETAILS}>
             <Text style={[LIST_TEXT, LIST_ITEM_NAME]}>{props.name}</Text>
             <View style={LIST_SELLER}>
-              <AntDesign name="user" size={12} color="black" />
+              {/* <AntDesign name="user" size={12} color="black" /> */}
+              {props.User.user_image === "" || !props.User.user_image ? (
+                <AntDesign name="user" size={14} color="black" />
+              ) : (
+                <Image source={{ uri: props.User.user_image }} style={PROFILE_IMAGE} />
+              )}
               <Text style={[LIST_TEXT, LIST_TEXT_SELLER]}>
                 {props.User.firstname} {props.User.lastname}
               </Text>

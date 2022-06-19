@@ -28,6 +28,11 @@ const LIST_CONTAINER: ViewStyle = {
   marginVertical: 2,
 }
 
+const USER_ITEM: ViewStyle = {
+  borderColor: color.palette.primaryGreen,
+  borderWidth: 4,
+}
+
 const TEXT_WHITE: TextStyle = {
   color: color.palette.white,
 }
@@ -150,9 +155,15 @@ export const OrderListItem = (props) => {
     return willFocusSubscription
   }, [userID])
 
-  const fetchData = () => {
+  const fetchData = async () => {
+    const token = await AsyncStorage.getItem("token")
+    const config = {
+      headers: {
+        Authorization: token,
+      },
+    }
     axios
-      .get(connectionUrl + `api/users/${userID}`)
+      .get(connectionUrl + `api/users/${userID}`, config)
       .then((res) => {
         setUser(res.data.user[0])
       })
@@ -243,12 +254,16 @@ export const OrderListItem = (props) => {
   return (
     <Pressable
       onPress={() => {
-        if (props.Product.User.id === user.id) {
+        if (user && props.Product.User.id === user.id) {
           handleOrderUpdate()
         }
       }}
     >
-      <View style={LIST_CONTAINER}>
+      <View
+        style={
+          user && props.Product.User.id === user.id ? [LIST_CONTAINER, USER_ITEM] : LIST_CONTAINER
+        }
+      >
         <Pressable onPress={() => handleDeleteOrder()}>
           <View style={DELETE_BUTTON}>
             <FontAwesome name="trash-o" size={32} color={color.palette.primaryGreenT} />
@@ -262,9 +277,15 @@ export const OrderListItem = (props) => {
             <Text style={LIST_TEXT}>
               Product Name: <Text style={[LIST_TEXT, LIST_ITEM_NAME]}>{props.Product.name}</Text>
             </Text>
+            <Text style={LIST_TEXT}>
+              Order Status:{" "}
+              <Text style={[LIST_TEXT, LIST_ITEM_NAME]}>
+                {props.fullfilled ? "Fullfilled" : "In-Progress"}
+              </Text>
+            </Text>
             {user && user.UserType.name === "User" ? (
               <Text style={LIST_TEXT}>
-                Seller:{" "}
+                Sold By:{" "}
                 <Text style={[LIST_TEXT, LIST_ITEM_NAME]}>
                   {props.Product.User.sellerfname} {props.Product.User.sellerlname}
                 </Text>
@@ -278,19 +299,13 @@ export const OrderListItem = (props) => {
                   </Text>
                 </Text>
                 <Text style={LIST_TEXT}>
-                  Seller:{" "}
+                  Sold By:{" "}
                   <Text style={[LIST_TEXT, LIST_ITEM_NAME]}>
                     {props.Product.User.sellerfname} {props.Product.User.sellerlname}
                   </Text>
                 </Text>
               </>
             )}
-            <Text style={LIST_TEXT}>
-              Order Status:{" "}
-              <Text style={[LIST_TEXT, LIST_ITEM_NAME]}>
-                {props.fullfilled ? "Fullfilled" : "In-Progress"}
-              </Text>
-            </Text>
           </View>
           <View style={LIST_PRICE_CONTAINER}>
             <Text style={[LIST_TEXT, LIST_PRICE, LIST_PRICE_TOTAL]}>

@@ -42,19 +42,20 @@ function App() {
     isRestored: isNavigationStateRestored,
   } = useNavigationPersistence(storage, NAVIGATION_PERSISTENCE_KEY)
 
+  ;(async function () {
+    const token = await AsyncStorage.getItem("token")
+    if (token) {
+      axios.defaults.headers.common["Authorization"] = token
+    } else {
+      axios.defaults.headers.common["Authorization"] = null
+    }
+  })()
+
   // Kick off initial async loading actions, like loading fonts and RootStore
   useEffect(() => {
     ;(async () => {
       await initFonts() // expo
       setupRootStore().then(setRootStore)
-    })()
-    ;(async function () {
-      const token = await AsyncStorage.getItem("token")
-      if (token) {
-        axios.defaults.headers.common["Authorization"] = token
-      } else {
-        axios.defaults.headers.common["Authorization"] = null
-      }
     })()
   }, [])
 

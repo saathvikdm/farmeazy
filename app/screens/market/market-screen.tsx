@@ -10,6 +10,7 @@ import {
   ProductModal,
   Screen,
   Text,
+  TextField,
 } from "../../components"
 // import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "../../models"
@@ -23,6 +24,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage"
 import axios from "axios"
 
 import connectionUrl from "../../connection.js"
+import { Picker } from "@react-native-picker/picker"
+import { Entypo, FontAwesome } from "@expo/vector-icons"
 
 const FULL: ViewStyle = {
   flex: 1,
@@ -32,11 +35,22 @@ const FLAT_LIST: ViewStyle = {
   paddingHorizontal: spacing[0],
 }
 
+const SEARCH_INPUT: ViewStyle = {
+  backgroundColor: color.palette.white,
+  padding: spacing[2],
+  flexDirection: "row",
+  alignItems: "flex-end",
+  justifyContent: "space-between",
+}
+
 export const MarketScreen = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false)
   const [modalData, setModalData] = useState(null)
 
+  const [searchQuery, setSearchQuery] = useState("")
+
   const [products, setProducts] = useState()
+  const [filteredProducts, setFilteredProducts] = useState()
 
   const [userID, setUserID] = React.useState("")
   const [loading, setloading] = React.useState(true)
@@ -58,6 +72,7 @@ export const MarketScreen = ({ navigation }) => {
       .then((res) => {
         const filteredResult = res.data.product.filter((i) => i.type === "Farm")
         setProducts(filteredResult)
+        setFilteredProducts(filteredResult)
       })
       .catch((err) => console.log(err))
   }
@@ -80,6 +95,20 @@ export const MarketScreen = ({ navigation }) => {
     })()
   }, [])
 
+  useEffect(() => {
+    if (searchQuery !== "" && searchQuery.length > 0) {
+      if (filteredProducts && filteredProducts.length > 0) {
+        const prodArr = Array.from(filteredProducts)
+        const filteredProductsArr = prodArr.filter((item) =>
+          item.name.toLowerCase().includes(searchQuery.toLowerCase()),
+        )
+        setProducts(filteredProductsArr)
+      }
+    } else {
+      fetchData()
+    }
+  }, [searchQuery])
+
   return (
     <View style={FULL}>
       <Screen preset="fixed" backgroundColor={color.palette.offWhite}>
@@ -90,6 +119,41 @@ export const MarketScreen = ({ navigation }) => {
             modalData={modalData}
           />
         )}
+        {/* <Picker
+        // selectedValue={product.type}
+        // onValueChange={(itemValue, itemIndex) =>
+        //   setProduct({ ...product, type: itemValue.toString() })
+        // }
+        >
+          <Picker.Item label="Consumable" value="Consumable" />
+          <Picker.Item label="Rent" value="Rent" />
+        </Picker> */}
+        <View style={SEARCH_INPUT}>
+          <TextField
+            style={{ paddingVertical: spacing[0] }}
+            value={searchQuery}
+            onChangeText={(text) => setSearchQuery(text)}
+            label={`Search Product`}
+            placeholder={`Enter product search term`}
+          />
+          {searchQuery.length > 0 ? (
+            <Entypo
+              name="circle-with-cross"
+              style={{ marginBottom: spacing[2] }}
+              size={24}
+              onPress={() => setSearchQuery("")}
+              color={color.palette.lighterGrey}
+            />
+          ) : (
+            <FontAwesome
+              name="search"
+              style={{ marginBottom: spacing[2] }}
+              size={24}
+              color={color.palette.lighterGrey}
+            />
+          )}
+        </View>
+
         <FlatList
           contentContainerStyle={FLAT_LIST}
           data={products}

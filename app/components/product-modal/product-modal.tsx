@@ -23,6 +23,8 @@ import axios from "axios"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { useNavigation } from "@react-navigation/native"
 
+import connectionUrl from "../../connection.js"
+
 const CENTERED_VIEW: ViewStyle = {
   flex: 1,
   justifyContent: "space-between",
@@ -169,6 +171,12 @@ const PRODUCT_DETAILS: ViewStyle = {
   alignItems: "flex-start",
 }
 
+const PROFILE_IMAGE: ImageStyle = {
+  borderRadius: 50,
+  height: 18,
+  width: 18,
+}
+
 export const ProductModal = ({ modalVisible = false, setModalVisible, modalData = null }) => {
   const navigation = useNavigation()
 
@@ -178,7 +186,7 @@ export const ProductModal = ({ modalVisible = false, setModalVisible, modalData 
   const [userID, setUserID] = React.useState("")
 
   if (modalData) {
-    imgUrl = "http://192.168.29.110:8080/" + modalData.image.split("8080")[1]
+    imgUrl = connectionUrl + modalData.image.split("8080")[1]
   }
 
   React.useEffect(() => {
@@ -280,7 +288,7 @@ export const ProductModal = ({ modalVisible = false, setModalVisible, modalData 
               titleStyle={HEADER_TITLE}
               iconStyle={HEADER_ICON}
             />
-            <Image source={{ uri: imgUrl }} style={IMAGE} />
+            <Image source={{ uri: modalData.image }} style={IMAGE} />
             <View style={DETAILS_CONTAINER}>
               <Text style={[TEXT, PRODUCT_NAME]}>{modalData.name}</Text>
               <Text style={[TEXT, PRODUCT_MOQ]}>
@@ -293,10 +301,16 @@ export const ProductModal = ({ modalVisible = false, setModalVisible, modalData 
                 <View style={PRODUCT_PRICE}>
                   <Text style={[TEXT, PRODUCT_SUBHEADER]}>
                     <AntDesign
-                      onPress={() => setqty(qty - 1)}
+                      onPress={() => {
+                        qty > modalData.min_qty && setqty(qty - 1)
+                      }}
                       name="minussquare"
                       size={32}
-                      color={color.palette.primaryGreenT}
+                      color={
+                        qty > modalData.min_qty
+                          ? color.palette.primaryGreenT
+                          : color.palette.primaryGreenDisabled
+                      }
                     />
                     <Text style={COUNTER_TEXT}> {qty} </Text>
                     <AntDesign
@@ -328,7 +342,12 @@ export const ProductModal = ({ modalVisible = false, setModalVisible, modalData 
                 </View>
                 <Text style={[TEXT, PRODUCT_MOQ, { marginTop: spacing[4] }]}>Seller Details</Text>
                 <View style={PRODUCT_SELLER}>
-                  <AntDesign name="user" size={14} color="black" />
+                  {/* <AntDesign name="user" size={14} color="black" /> */}
+                  {modalData.User.user_image === "" || !modalData.User.user_image ? (
+                    <AntDesign name="user" size={14} color="black" />
+                  ) : (
+                    <Image source={{ uri: modalData.User.user_image }} style={PROFILE_IMAGE} />
+                  )}
                   <Text style={[TEXT_BOLD, { paddingLeft: spacing[2] }]}>
                     {modalData.User.firstname} {modalData.User.lastname}
                   </Text>
